@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Froggy Run</title>
+    <style>
+        body {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        #game-container {
+            width: 800px;
+            height: 400px;
+            border: 2px solid #333;
+            background-color: #ADD8E6; 
+            overflow: hidden;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); 
+            transform-origin: center center;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+        
+        #start-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #add8e6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        #start-screen img {
+            width: 100%; 
+            height: 100%;
+            object-fit: cover; 
+        }
+        
+        #start-screen-text {
+            position: absolute; 
+            bottom: 30px; 
+            font-size: 30px;
+            font-weight: bold;
+            color: #FFFFFF;
+            background-color: rgba(0, 0, 0, 0.5); 
+            padding: 10px 20px;
+            border-radius: 10px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        #mode-select-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #add8e6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99;
+            transition: background-color 0.5s;
+        }
+
+        .mode-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 3px solid #8B4513;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 300px;
+            margin-bottom: 10px;
+        }
+        
+        .mode-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+        
+        .mode-card h3 {
+            font-size: 24px;
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        
+        .mode-card p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+        }
+
+        #char-select-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #add8e6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 98;
+            transition: background-color 0.5s;
+        }
+
+        #char-select-screen h2 {
+            font-size: 40px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        #char-grid {
+            display: flex;
+            gap: 20px;
+        }
+
+        .char-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 3px solid #8B4513;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .char-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+
+        .char-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        
+        .char-card p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin: 5px 0 0 0;
+        }
+        
+        #explanation-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #add8e6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 97;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            transition: background-color 0.5s;
+        }
+        
+        #explanation-screen h2 {
+            font-size: 30px;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+
+        #explanation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .explanation-item {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            padding: 5px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            min-height: 40px; 
+            display: flex;
+            align-items: center;
+        }
+        
+        .explanation-item-key {
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            width: 120px;
+        }
+        
+        .explanation-item-icon {
+            font-size: 24px;
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+        }
+
+        #next-button {
+            font-size: 24px;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #next-button:hover {
+            background-color: #45a049;
+        }
+        
+        #touch-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            display: none; 
+            /* Let taps pass through the empty parts of this container! */
+            pointer-events: none; 
+        }
+        
+        #joystick {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 120px;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            /* Make joystick explicitly clickable */
+            pointer-events: auto; 
+        }
+        
+        #joystick-knob {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            left: 30px;
+            top: 30px;
+            transition: transform 0.1s;
+        }
+        
+        #jump-button {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 200, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            border: 4px solid rgba(255,255,255,0.7);
+            /* Make button explicitly clickable */
+            pointer-events: auto; 
+        }
+
+        #spikes {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            background: repeating-linear-gradient(
+                45deg, 
+                transparent, 
+                transparent 14px, 
+                #8B0000 14px, /* DarkRed */
+                #8B0000 16px
+            ),
+            repeating-linear-gradient(
+                -45deg, 
+                transparent, 
+                transparent 14px, 
+                #8B0000 14px, /* DarkRed */
+                #8B0000 16px
+            );
+            background-color: #B22222;
+        }
+
+        #frog {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            left: 50px; 
+            z-index: 10;
+            transform-origin: center center;
+            transition: transform 0.2s ease-out, opacity 0.1s;
+        }
+
+        #frog-wings {
+            position: absolute;
+            top: 5px;
+            left: -20px; 
+            font-size: 24px;
+            z-index: -1; 
+            display: none; 
+            opacity: 0.8;
+            transition: opacity 0.1s;
+        }
+        
+        #frog-rocket {
+            position: absolute;
+            font-size: 40px;
+            top: 20px; 
+            left: 60px; 
+            z-index: 11; 
+            display: none;
+            transition: opacity 0.1s;
+        }
+
+        .platform {
+            position: absolute;
+            height: 20px;
+            background-color: #8B4513;
+            left: 800px; 
+            z-index: 5;
+        }
+
+        .coin {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #FFD700;
+            border: 2px solid #DAA520;
+            border-radius: 50%;
+            left: 800px; 
+            z-index: 6; 
+        }
+
+        .heart-collectible {
+            position: absolute;
+            font-size: 24px;
+            left: 800px; 
+            z-index: 6;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .potion {
+            position: absolute;
+            font-size: 24px;
+            left: 800px; 
+            z-index: 6;
+        }
+
+        .wings {
+            position: absolute;
+            font-size: 24px;
+            left: 800px; 
+            z-index: 6;
+        }
+
+        .candy {
+            position: absolute;
+            font-size: 24px;
+            left: 800px; 
+            z-index: 6;
+        }
+        
+        .question-mark {
+            position: absolute;
+            font-size: 24px;
+            left: 800px;
+            z-index: 6;
+            color: white;
+            background-color: rebeccapurple;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        
+        .bullet-collectible {
+            position: absolute;
+            font-size: 24px;
+            left: 800px;
+            z-index: 6;
+        }
+        
+        .frog-clone {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 9; 
+            opacity: 0.7; 
+            transform-origin: center center;
+            transition: transform 0.2s ease-out;
+        }
+        
+        .fireball {
+            position: absolute;
+            font-size: 30px;
+            z-index: 20; 
+            text-shadow: 0 0 5px rgba(255,0,0,0.5);
+        }
+        
+        .wrath-collectible {
+            position: absolute;
+            font-size: 24px;
+            left: 800px;
+            z-index: 6;
+        }
+        
+        .fireball-warning {
+            position: absolute;
+            font-size: 30px;
+            z-index: 20;
+            color: #FF0000;
+            text-shadow: 0 0 5px white;
+            animation: warning-pulse 0.5s infinite;
+        }
+        
+        @keyframes warning-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: #333;
+            z-index: 20;
+        }
+        
+        #hearts-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            z-index: 20;
+            display: flex;
+            gap: 5px;
+        }
+
+        #game-timer {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            z-index: 20;
+        }
+
+        #message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: #333;
+            text-align: center;
+            display: none; 
+            z-index: 30;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            pointer-events: auto; /* Ensure message container captures clicks */
+        }
+
+        #message img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        
+        #message button {
+            font-size: 24px;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #message button:hover {
+            background-color: #45a049;
+        }
+        
+        .cloud {
+            position: absolute;
+            width: 200px;
+            height: 60px;
+            background: #fff;
+            border-radius: 60px;
+            z-index: 1; 
+            opacity: 0.8;
+            animation: drift linear infinite;
+            display: none; 
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 100px;
+            height: 100px;
+            top: -50px;
+            left: 20px;
+        }
+
+        .cloud::after {
+            width: 120px;
+            height: 120px;
+            top: -60px;
+            right: 20px;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translateX(800px); 
+            }
+            to {
+                transform: translateX(-300px); 
+            }
+        }
+
+        #cloud1 {
+            top: 50px;
+            animation-duration: 30s; 
+            animation-delay: -5s; 
+        }
+
+        #cloud2 {
+            top: 120px;
+            animation-duration: 40s; 
+            animation-delay: -15s; 
+            transform: scale(0.8); 
+        }
+
+        #cloud3 {
+            top: 80px;
+            animation-duration: 25s; 
+            animation-delay: -10s;
+        }
+        
+        .ember {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff4500;
+            border-radius: 50%;
+            z-index: 1; 
+            opacity: 0;
+            animation: floatUp linear infinite;
+            display: none; 
+            box-shadow: 0 0 10px #ff4500, 0 0 20px #ff8c00;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(400px) translateX(0); 
+                opacity: 0.8;
+            }
+            to {
+                transform: translateY(-50px) translateX(20px); 
+                opacity: 0;
+            }
+        }
+
+        #ember1 { animation-duration: 8s; animation-delay: -1s; left: 10%; }
+        #ember2 { animation-duration: 10s; animation-delay: -3s; left: 40%; }
+        #ember3 { animation-duration: 6s; animation-delay: -2s; left: 70%; }
+        #ember4 { animation-duration: 9s; animation-delay: -4s; left: 90%; }
+        
+        .hell-mode-bg {
+            background: linear-gradient(to bottom, #1a0000 0%, #2c1a1a 100%);
+            border-color: #ff4d4d;
+        }
+        
+        .hell-mode-bg #mode-select-screen,
+        .hell-mode-bg #char-select-screen,
+        .hell-mode-bg #explanation-screen {
+            background: linear-gradient(to bottom, #1a0000 0%, #2c1a1a 100%);
+        }
+        
+        .hell-mode-bg #spikes {
+            background-color: #4d0000;
+        }
+
+        .hell-mode-bg #score,
+        .hell-mode-bg #mode-select-screen h2,
+        .hell-mode-bg #char-select-screen h2,
+        .hell-mode-bg #explanation-screen h2,
+        .hell-mode-bg #game-timer { 
+            color: #ffadad;
+        }
+
+        .hell-mode-bg .mode-card,
+        .hell-mode-bg .char-card,
+        .hell-mode-bg .explanation-item {
+            background-color: rgba(255, 173, 173, 0.7);
+            border-color: #ff4d4d;
+        }
+        
+        .hell-mode-bg .mode-card:hover,
+        .hell-mode-bg .char-card:hover {
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+        }
+        
+        .hell-mode-bg .mode-card h3,
+        .hell-mode-bg .mode-card p,
+        .hell-mode-bg .char-card p,
+        .hell-mode-bg .explanation-item {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        
+        <div id="start-screen">
+            <img src="froggy_run_start.png" alt="Froggy Run Start Screen">
+            <p id="start-screen-text">Press to Start</p>
+        </div>
+        
+        <div id="mode-select-screen" style="display: none;">
+            <h2>Choose Your Mode</h2>
+            <div class="mode-card" id="classic-mode">
+                <h3>Classic Mode</h3>
+                <p>Collect 100 coins to win!</p>
+            </div>
+            <div class="mode-card" id="chaotic-mode">
+                <h3>Chaotic Mode</h3>
+                <p>Survive as long as you can. Coins are for score!</p>
+            </div>
+            <div class="mode-card" id="hell-mode">
+                <h3>Hell Mode</h3>
+                <p>Fire rains from the sky! 2:00 time limit.</p>
+            </div>
+        </div>
+
+        <div id="char-select-screen" style="display: none;">
+            <h2>Choose Your Frog</h2>
+            <div id="char-grid">
+                <div class="char-card" id="agwong">
+                    <img src="image_031b7e.png" alt="Agwong">
+                    <p>Agwong</p>
+                </div>
+                <div class="char-card" id="milmil">
+                    <img src="image_162312.png" alt="MilMil">
+                    <p>MilMil</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="explanation-screen" style="display: none;">
+            <h2>How to Play</h2>
+            <div id="explanation-grid">
+                <div class="explanation-item">
+                    <span class="explanation-item-key">Joystick</span>
+                    <span>Move Left & Right</span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-key">Jump Button</span>
+                    <span>Jump</span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-key">Joystick ↑ ↓</span>
+                    <span>Fly (with Wings/Bullet)</span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-icon">🪙</span>
+                    <span id="coin-explanation"></span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-icon">❤️</span>
+                    <span>Heart: Gain 1 max health.</span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-icon">🧪</span>
+                    <span>Potion: 2x size for 5s.</span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-icon">🍬</span>
+                    <span>Candy: 2x speed for 5s.</span>
+                </div>
+                <div class="explanation-item" id="wings-explanation">
+                    <span class="explanation-item-icon">🕊️</span>
+                    <span>Wings: Fly for 8s (has gravity).</span>
+                </div>
+                <div class="explanation-item" id="wrath-explanation">
+                    <span class="explanation-item-icon">👊</span>
+                    <span>Wrath: Fireballs fall for 5s!</span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-icon">🚀</span>
+                    <span>Bullet: Fly for 8s (no gravity).</span>
+                </div>
+                <div class="explanation-item">
+                    <span class="explanation-item-icon">❓</span>
+                    <span>Squad: Get 2 clones for 8s.</span>
+                </div>
+                
+            </div>
+            <button id="next-button">Next</button>
+        </div>
+        
+        <div class="cloud" id="cloud1"></div>
+        <div class="cloud" id="cloud2"></div>
+        <div class="cloud" id="cloud3"></div>
+        
+        <div class="ember" id="ember1"></div>
+        <div class="ember" id="ember2"></div>
+        <div class="ember" id="ember3"></div>
+        <div class="ember" id="ember4"></div>
+
+        <div id="score" style="display: none;">Coins: 0 / 100</div>
+        <div id="hearts-container" style="display: none;"></div>
+        <div id="game-timer" style="display: none;">2:00</div>
+        <div id="spikes"></div> 
+        <div id="frog" style="display: none;">
+            <div id="frog-wings">🕊️</div>
+            <div id="frog-rocket">🚀</div>
+        </div>
+        <div id="message"></div>
+        
+        <div id="touch-controls">
+            <div id="joystick">
+                <div id="joystick-knob"></div>
+            </div>
+            <div id="jump-button">JUMP</div>
+        </div>
+    </div>
+
+    <script>
+        // Get game elements
+        const gameContainer = document.getElementById('game-container');
+        const frog = document.getElementById('frog');
+        const spikes = document.getElementById('spikes');
+        const scoreDisplay = document.getElementById('score');
+        const messageDisplay = document.getElementById('message');
+        const heartsContainer = document.getElementById('hearts-container');
+        const startScreen = document.getElementById('start-screen');
+        const charSelectScreen = document.getElementById('char-select-screen');
+        const agwongChar = document.getElementById('agwong');
+        const milmilChar = document.getElementById('milmil');
+        const frogWings = document.getElementById('frog-wings');
+        const frogRocket = document.getElementById('frog-rocket');
+        const modeSelectScreen = document.getElementById('mode-select-screen');
+        const classicModeButton = document.getElementById('classic-mode');
+        const chaoticModeButton = document.getElementById('chaotic-mode');
+        
+        const explanationScreen = document.getElementById('explanation-screen');
+        const nextButton = document.getElementById('next-button');
+        const coinExplanation = document.getElementById('coin-explanation');
+        
+        const hellModeButton = document.getElementById('hell-mode');
+        const wingsExplanation = document.getElementById('wings-explanation');
+        const wrathExplanation = document.getElementById('wrath-explanation');
+        
+        const touchControls = document.getElementById('touch-controls');
+        const joystick = document.getElementById('joystick');
+        const joystickKnob = document.getElementById('joystick-knob');
+        const jumpButton = document.getElementById('jump-button');
+        
+        const gameTimerDisplay = document.getElementById('game-timer');
+
+        // Game settings
+        const gravity = 1.0; 
+        const jumpHeight = 20; 
+        const superJumpHeight = 30;
+        const winningScore = 100; 
+        const baseScrollSpeed = 3; 
+        const fastScrollSpeed = 6;
+        
+        // Player/Game state
+        let frogBottom; 
+        let frogLeft = 50;
+        let frogWidth = 80;
+        let frogHeight = 80;
+        let frogVelocity = 0;
+        let isJumping = false; 
+        let isGameOver = false;
+        let canTakeDamage = true; 
+
+        let score = 0;
+        let health = 3; 
+        let maxHealth = 3; 
+        
+        let gameLoopId;
+        let generationLoopTimer; 
+        
+        let isMovingLeft = false;
+        let isMovingRight = false;
+        let isMovingUp = false;
+        let isMovingDown = false;
+        
+        let lastPlatformElement;
+        
+        let isGeneratingPlatform = false; 
+        
+        let selectedFrogImage = '';
+        let gameMode = 'classic'; 
+        
+        // Power-up states
+        let isBig = false;
+        let growTimer;
+        let hasWings = false;
+        let wingsTimer;
+        let blinkTimer;
+        let isFastCandy = false;
+        let isFastBullet = false; 
+        let speedTimer; 
+        let hasBulletHead = false;
+        let bulletHeadTimer;
+        let bulletBlinkTimer;
+        let clone1 = null;
+        let clone2 = null;
+        let squadTimer = null;
+        
+        let wrathTimer;
+        let fireballSpawnTimer;
+        
+        let hellModeTimeRemaining = 120;
+        let lastTime = 0;
+        
+        // Joystick state
+        let joystickActive = false;
+        let joystickTouchId = null;
+        let joystickCenterX = 0;
+        let joystickCenterY = 0;
+        const joystickMaxDist = 30; 
+
+        // --- GAME FUNCTIONS ---
+
+        function jump() {
+            if (!isJumping && !isGameOver && !hasWings && !hasBulletHead) {
+                isJumping = true;
+                if (isBig) {
+                    frogVelocity = superJumpHeight;
+                } else {
+                    frogVelocity = jumpHeight;
+                }
+            }
+        }
+        
+        function handleKeyDown(e) {
+            if (e.key === ' ' || e.key === 'Spacebar') {
+                jump();
+            }
+            if (e.key === 'ArrowLeft') {
+                isMovingLeft = true;
+            }
+            if (e.key === 'ArrowRight') {
+                isMovingRight = true;
+            }
+            if (e.key === 'ArrowUp' && (hasWings || hasBulletHead)) {
+                isMovingUp = true;
+            }
+            if (e.key === 'ArrowDown' && (hasWings || hasBulletHead)) {
+                isMovingDown = true;
+            }
+        }
+
+        function handleKeyUp(e) {
+            if (e.key === 'ArrowLeft') {
+                isMovingLeft = false;
+            }
+            if (e.key === 'ArrowRight') {
+                isMovingRight = false;
+            }
+            if (e.key === 'ArrowUp') {
+                isMovingUp = false;
+            }
+            if (e.key === 'ArrowDown') {
+                isMovingDown = false;
+            }
+        }
+        
+        // MASTER GAME LOOP
+        function gameLoop(timestamp) {
+            if (isGameOver) {
+                cancelAnimationFrame(gameLoopId); 
+                return;
+            }
+            
+            if (!lastTime) {
+                lastTime = timestamp;
+            }
+            let deltaTime = (timestamp - lastTime) / 1000; 
+            lastTime = timestamp;
+
+            // --- 1. Physics ---
+            if (hasBulletHead) {
+                frogVelocity = 0;
+                if (isMovingUp) {
+                    frogVelocity = 6;
+                }
+                if (isMovingDown) {
+                    frogVelocity = -6;
+                }
+                newFrogBottom = frogBottom + frogVelocity;
+            } else {
+                frogVelocity -= gravity; 
+
+                if (hasWings) {
+                    if (isMovingUp) {
+                        frogVelocity += 1.5; 
+                    }
+                    if (isMovingDown) {
+                        frogVelocity -= 1.0; 
+                    }
+                    if(frogVelocity > 6) frogVelocity = 6; 
+                    if(frogVelocity < -8) frogVelocity = -8; 
+                }
+                newFrogBottom = frogBottom + frogVelocity;
+            }
+            
+            // --- 2. Landing Logic ---
+            let potentialLandingTop = spikes.offsetHeight; 
+            let onSafePlatform = false;
+
+            if (!hasWings && !hasBulletHead) { 
+                let frogRight = frogLeft + frogWidth;
+                document.querySelectorAll('.platform').forEach(platform => {
+                    const platformLeft = parseFloat(platform.style.left);
+                    const platformWidth = platform.offsetWidth;
+                    const platformRight = platformLeft + platformWidth;
+                    const platformBottom = parseFloat(platform.style.bottom);
+                    const platformTop = platformBottom + platform.offsetHeight;
+
+                    if (frogRight > platformLeft && frogLeft < platformRight) {
+                        if (frogBottom >= platformTop && platformTop > potentialLandingTop) {
+                            potentialLandingTop = platformTop;
+                            onSafePlatform = true; 
+                        }
+                    }
+                });
+            }
+
+            // --- 3. Apply Landing/Collision ---
+            if (frogVelocity < 0 && newFrogBottom <= potentialLandingTop) {
+                newFrogBottom = potentialLandingTop; 
+                
+                if (hasWings || hasBulletHead) {
+                    frogVelocity = (hasWings) ? 8 : 0; 
+                    if (canTakeDamage) {
+                        newFrogBottom = handleSpikeDamage(); 
+                    }
+                } else {
+                    frogVelocity = 0;
+                    isJumping = false; 
+                    if (!onSafePlatform && canTakeDamage) {
+                        newFrogBottom = handleSpikeDamage(); 
+                    }
+                }
+            } else if (!hasWings && !hasBulletHead) { 
+                isJumping = true;
+            }
+
+            // --- 4. Ceiling Check ---
+            if (!isBig) {
+                let newFrogTop = newFrogBottom + frogHeight;
+                if (newFrogTop > gameContainer.offsetHeight) {
+                    newFrogBottom = gameContainer.offsetHeight - frogHeight;
+                    frogVelocity = 0;
+                }
+            }
+            
+            // --- 5. Final Position Update ---
+            frogBottom = newFrogBottom;
+            frog.style.bottom = frogBottom + 'px';
+            
+            // --- 6. Scrolling ---
+            let speedMultiplier = 1;
+            if (isFastCandy) speedMultiplier *= 2;
+            if (isFastBullet) speedMultiplier *= 2;
+            let currentScrollSpeed = baseScrollSpeed * speedMultiplier;
+            
+            const elementsToScroll = document.querySelectorAll(
+                '.platform, .coin, .heart-collectible, .potion, .wings, .candy, .question-mark, .bullet-collectible, .wrath-collectible, .fireball-warning, .fireball'
+            );
+            
+            if (isMovingRight) {
+                elementsToScroll.forEach(el => {
+                    let newLeft = parseFloat(el.style.left) - currentScrollSpeed;
+                    if (newLeft < -el.offsetWidth) {
+                        el.remove();
+                    } else {
+                        el.style.left = newLeft + 'px';
+                    }
+                });
+            }
+            if (isMovingLeft) {
+                elementsToScroll.forEach(el => {
+                    let newLeft = parseFloat(el.style.left) + currentScrollSpeed;
+                    if (newLeft > gameContainer.offsetWidth) {
+                        el.remove();
+                    } else {
+                        el.style.left = newLeft + 'px';
+                    }
+                });
+            }
+            
+            // --- 7. Fireball Loop ---
+            document.querySelectorAll('.fireball').forEach(fireball => {
+                let newTop = parseFloat(fireball.style.top) + 5; 
+                fireball.style.top = newTop + 'px';
+
+                const frogRect = frog.getBoundingClientRect();
+                const fireballRect = fireball.getBoundingClientRect();
+                if (
+                    frogRect.left < fireballRect.right &&
+                    frogRect.right > fireballRect.left &&
+                    frogRect.top < fireballRect.bottom &&
+                    frogRect.bottom > fireballRect.top &&
+                    canTakeDamage
+                ) {
+                    fireball.remove();
+                    newFrogBottom = handleSpikeDamage(); 
+                }
+                
+                if (newTop > 400) {
+                    fireball.remove();
+                }
+            });
+            
+            // --- 8. Update Squad Position ---
+            if (clone1) {
+                clone1.style.bottom = (frogBottom + 40) + 'px';
+                clone1.style.left = '20px'; 
+                clone1.style.transform = frog.style.transform; 
+            }
+            if (clone2) {
+                clone2.style.bottom = (frogBottom - 40) + 'px';
+                clone2.style.left = '20px'; 
+                clone2.style.transform = frog.style.transform; 
+            }
+            
+            // --- 9. Collision Checks ---
+            checkCoinCollision();
+            checkHeartCollision();
+            checkPotionCollision();
+            checkWingsCollision(); 
+            checkCandyCollision(); 
+            checkQuestionMarkCollision();
+            checkBulletHeadCollision(); 
+            checkWrathCollision(); 
+            
+            // --- 10. Game Timer ---
+            if (gameMode === 'hell') {
+                hellModeTimeRemaining -= deltaTime;
+                updateTimerDisplay();
+                if (hellModeTimeRemaining <= 0) {
+                    gameOver();
+                }
+            }
+            
+            if (frogBottom < -frogHeight) { 
+                 gameOver();
+            }
+            
+            // --- 11. Request Next Frame ---
+            gameLoopId = requestAnimationFrame(gameLoop);
+        }
+        
+        // --- Power-up & Collision Functions ---
+        
+        function handleSpikeDamage() {
+            health--;
+            updateHearts();
+            canTakeDamage = false; 
+
+            if (health <= 0) {
+                gameOver();
+                return spikes.offsetHeight;
+            } 
+                
+            frog.style.opacity = 0.5;
+            if (frogWings.style.display === 'block') frogWings.style.opacity = 0.5;
+            if (frogRocket.style.display === 'block') frogRocket.style.opacity = 0.5;
+
+            let closestPlatform = null;
+            let minDistance = Infinity;
+            const frogCenterX = frogLeft + frogWidth / 2;
+            const allPlatforms = document.querySelectorAll('.platform');
+            let platformTop;
+
+            if (allPlatforms.length === 0) {
+                platformTop = frogBottom + jumpHeight; 
+                isJumping = true; 
+            } else {
+                allPlatforms.forEach(platform => {
+                    const platformLeft = parseFloat(platform.style.left);
+                    const platformWidth = platform.offsetWidth;
+                    const platformCenterX = platformLeft + platformWidth / 2;
+                    const distance = Math.abs(frogCenterX - platformCenterX);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestPlatform = platform;
+                    }
+                });
+                platformTop = parseFloat(closestPlatform.style.bottom) + closestPlatform.offsetHeight;
+                isJumping = false; 
+            }
+            
+            frogVelocity = 0; 
+
+            setTimeout(() => {
+                canTakeDamage = true;
+                frog.style.opacity = 1.0;
+                if (frogWings.style.display === 'block') frogWings.style.opacity = 0.8;
+                if (frogRocket.style.display === 'block') frogRocket.style.opacity = 1;
+            }, 1500);
+
+            return platformTop;
+        }
+
+        function updateHearts() {
+            heartsContainer.innerHTML = ''; 
+            for (let i = 0; i < maxHealth; i++) {
+                if (i < health) {
+                    heartsContainer.innerHTML += '<span>❤️</span>'; 
+                } else {
+                    heartsContainer.innerHTML += '<span>🖤</span>'; 
+                }
+            }
+        }
+        
+        function updateTimerDisplay() {
+            if (hellModeTimeRemaining < 0) hellModeTimeRemaining = 0;
+            const minutes = Math.floor(hellModeTimeRemaining / 60);
+            const seconds = Math.floor(hellModeTimeRemaining % 60);
+            gameTimerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function checkCoinCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.coin').forEach(coin => {
+                const coinRect = coin.getBoundingClientRect(); 
+                if (
+                    frogRect.left < coinRect.right &&
+                    frogRect.right > coinRect.left &&
+                    frogRect.top < coinRect.bottom &&
+                    frogRect.bottom > coinRect.top
+                ) {
+                    coin.remove(); 
+                    score++;
+                    
+                    if (gameMode === 'classic') {
+                        scoreDisplay.textContent = `Coins: ${score} / 100`;
+                    } else {
+                        scoreDisplay.textContent = `Coins: ${score}`;
+                    }
+                    
+                    if (gameMode === 'classic' && score >= winningScore) {
+                        winGame();
+                    }
+                }
+            });
+        }
+        
+        function checkHeartCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.heart-collectible').forEach(heart => {
+                const heartRect = heart.getBoundingClientRect(); 
+                if (
+                    frogRect.left < heartRect.right &&
+                    frogRect.right > heartRect.left &&
+                    frogRect.top < heartRect.bottom &&
+                    frogRect.bottom > heartRect.top
+                ) {
+                    heart.remove(); 
+                    health++; 
+                    maxHealth++; 
+                    updateHearts(); 
+                }
+            });
+        }
+
+        function checkPotionCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.potion').forEach(potion => {
+                const potionRect = potion.getBoundingClientRect(); 
+                if (
+                    frogRect.left < potionRect.right &&
+                    frogRect.right > potionRect.left &&
+                    frogRect.top < potionRect.bottom &&
+                    frogRect.bottom > potionRect.top
+                ) {
+                    potion.remove(); 
+                    activateGrow();
+                }
+            });
+        }
+
+        function activateGrow() {
+            if (growTimer) {
+                clearTimeout(growTimer);
+            }
+            if (!isBig) {
+                isBig = true;
+                frogWidth = 160; 
+                frogHeight = 160; 
+            }
+            updateFrogTransform();
+            growTimer = setTimeout(deactivateGrow, 5000);
+        }
+
+        function deactivateGrow() {
+            if(growTimer) clearTimeout(growTimer);
+            growTimer = null;
+            isBig = false;
+            frogWidth = 80; 
+            frogHeight = 80; 
+            updateFrogTransform();
+        }
+        
+        function checkWingsCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.wings').forEach(wings => {
+                const wingsRect = wings.getBoundingClientRect(); 
+                if (
+                    frogRect.left < wingsRect.right &&
+                    frogRect.right > wingsRect.left &&
+                    frogRect.top < wingsRect.bottom &&
+                    frogRect.bottom > wingsRect.top
+                ) {
+                    wings.remove(); 
+                    activateWings();
+                }
+            });
+        }
+
+        function activateWings() {
+            if (hasBulletHead) deactivateBulletHead(); 
+            if (wingsTimer) clearTimeout(wingsTimer);
+            if (blinkTimer) clearInterval(blinkTimer);
+            
+            hasWings = true;
+            frogWings.style.display = 'block'; 
+            frog.style.opacity = 1; 
+            
+            setTimeout(startWingsBlinking, 5000); 
+            wingsTimer = setTimeout(deactivateWings, 8000); 
+        }
+
+        function startWingsBlinking() {
+            if (isGameOver) return;
+            blinkTimer = setInterval(() => {
+                let currentOpacity = frog.style.opacity;
+                if (currentOpacity == 1) {
+                    frog.style.opacity = 0.5;
+                    frogWings.style.opacity = 0.5;
+                } else {
+                    frog.style.opacity = 1;
+                    frogWings.style.opacity = 0.8; 
+                }
+            }, 200);
+        }
+
+        function deactivateWings() {
+            if(blinkTimer) clearInterval(blinkTimer); 
+            if(wingsTimer) clearTimeout(wingsTimer); 
+            blinkTimer = null;
+            wingsTimer = null;
+            
+            hasWings = false;
+            frog.style.opacity = 1; 
+            frogWings.style.display = 'none'; 
+            
+            isMovingUp = false;
+            isMovingDown = false;
+        }
+
+        function checkCandyCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.candy').forEach(candy => {
+                const candyRect = candy.getBoundingClientRect(); 
+                if (
+                    frogRect.left < candyRect.right &&
+                    frogRect.right > candyRect.left &&
+                    frogRect.top < candyRect.bottom &&
+                    frogRect.bottom > candyRect.top
+                ) {
+                    candy.remove(); 
+                    activateSpeed();
+                }
+            });
+        }
+
+        function activateSpeed() {
+            if (speedTimer) {
+                clearTimeout(speedTimer);
+            }
+            isFastCandy = true;
+            speedTimer = setTimeout(deactivateSpeed, 5000); 
+        }
+
+        function deactivateSpeed() {
+            if(speedTimer) clearTimeout(speedTimer);
+            speedTimer = null;
+            isFastCandy = false;
+        }
+        
+        function checkQuestionMarkCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.question-mark').forEach(q => {
+                const qRect = q.getBoundingClientRect(); 
+                if (
+                    frogRect.left < qRect.right &&
+                    frogRect.right > qRect.left &&
+                    frogRect.top < qRect.bottom &&
+                    frogRect.bottom > qRect.top
+                ) {
+                    q.remove(); 
+                    activateSquad();
+                }
+            });
+        }
+        
+        function activateSquad() {
+            if (squadTimer) clearTimeout(squadTimer); 
+
+            if (!clone1) {
+                clone1 = document.createElement('div');
+                clone1.classList.add('frog-clone');
+                clone1.style.backgroundImage = `url('${selectedFrogImage}')`;
+                gameContainer.appendChild(clone1);
+            }
+            
+            if (!clone2) {
+                clone2 = document.createElement('div');
+                clone2.classList.add('frog-clone');
+                clone2.style.backgroundImage = `url('${selectedFrogImage}')`;
+                gameContainer.appendChild(clone2);
+            }
+
+            squadTimer = setTimeout(deactivateSquad, 8000); 
+        }
+
+        function deactivateSquad() {
+            if (clone1) {
+                clone1.remove();
+                clone1 = null;
+            }
+            if (clone2) {
+                clone2.remove();
+                clone2 = null;
+            }
+            if(squadTimer) clearTimeout(squadTimer);
+            squadTimer = null;
+        }
+        
+        function checkBulletHeadCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.bullet-collectible').forEach(b => {
+                const bRect = b.getBoundingClientRect(); 
+                if (
+                    frogRect.left < bRect.right &&
+                    frogRect.right > bRect.left &&
+                    frogRect.top < bRect.bottom &&
+                    frogRect.bottom > bRect.top
+                ) {
+                    b.remove(); 
+                    activateBulletHead();
+                }
+            });
+        }
+        
+        function activateBulletHead() {
+            if (hasWings) deactivateWings(); 
+            if (bulletHeadTimer) clearTimeout(bulletHeadTimer);
+            if (bulletBlinkTimer) clearInterval(bulletBlinkTimer);
+
+            hasBulletHead = true;
+            isFastBullet = true; 
+            frogRocket.style.display = 'block'; 
+            frog.style.opacity = 1;
+            updateFrogTransform(); 
+
+            setTimeout(startBulletHeadBlinking, 5000); 
+            bulletHeadTimer = setTimeout(deactivateBulletHead, 8000); 
+        }
+
+        function startBulletHeadBlinking() {
+            if (isGameOver) return;
+            bulletBlinkTimer = setInterval(() => {
+                let currentOpacity = frog.style.opacity;
+                if (currentOpacity == 1) {
+                    frog.style.opacity = 0.5;
+                    frogRocket.style.opacity = 0.5;
+                } else {
+                    frog.style.opacity = 1;
+                    frogRocket.style.opacity = 1;
+                }
+            }, 200);
+        }
+
+        function deactivateBulletHead() {
+            if(bulletBlinkTimer) clearInterval(bulletBlinkTimer);
+            if(bulletHeadTimer) clearTimeout(bulletHeadTimer);
+            bulletBlinkTimer = null;
+            bulletHeadTimer = null;
+            
+            hasBulletHead = false;
+            isFastBullet = false; 
+
+            frog.style.opacity = 1;
+            frogRocket.style.display = 'none'; 
+            updateFrogTransform(); 
+
+            isMovingUp = false;
+            isMovingDown = false;
+        }
+        
+        function checkWrathCollision() {
+            if (isGameOver) return;
+            const frogRect = frog.getBoundingClientRect();
+
+            document.querySelectorAll('.wrath-collectible').forEach(wrath => {
+                const wrathRect = wrath.getBoundingClientRect(); 
+                if (
+                    frogRect.left < wrathRect.right &&
+                    frogRect.right > wrathRect.left &&
+                    frogRect.top < wrathRect.bottom &&
+                    frogRect.bottom > wrathRect.top
+                ) {
+                    wrath.remove(); 
+                    activateWrath();
+                }
+            });
+        }
+        
+        function activateWrath() {
+            if (wrathTimer) clearTimeout(wrathTimer);
+            if (fireballSpawnTimer) clearInterval(fireballSpawnTimer);
+            
+            fireballSpawnTimer = setInterval(spawnFireball, 500);
+            wrathTimer = setTimeout(deactivateWrath, 5000);
+        }
+        
+        function deactivateWrath() {
+            clearInterval(fireballSpawnTimer);
+            clearTimeout(wrathTimer);
+            fireballSpawnTimer = null;
+            wrathTimer = null;
+        }
+        
+        function spawnFireball() {
+            if (isGameOver) return;
+            
+            const fireballX = Math.random() * (gameContainer.offsetWidth - 30);
+            
+            let worldOffset = 0;
+            const firstPlatform = document.querySelector('.platform');
+            if (firstPlatform) {
+                worldOffset = parseFloat(firstPlatform.style.left);
+            }
+            
+            const worldX = fireballX - worldOffset;
+            
+            const warning = document.createElement('div');
+            warning.classList.add('fireball-warning');
+            warning.innerText = '⚠️';
+            warning.style.top = '0px';
+            warning.style.left = (worldOffset + fireballX) + 'px'; 
+            gameContainer.appendChild(warning);
+            
+            setTimeout(() => {
+                warning.remove();
+                if (isGameOver) return;
+                
+                const fireball = document.createElement('div');
+                fireball.classList.add('fireball');
+                fireball.innerText = '🔥';
+                fireball.style.top = '0px'; 
+                fireball.style.left = (worldOffset + fireballX) + 'px';
+                gameContainer.appendChild(fireball);
+                
+            }, 1000); 
+        }
+
+        function updateFrogTransform() {
+            let scale = isBig ? 'scale(2)' : 'scale(1)';
+            let rotate = hasBulletHead ? 'rotate(90deg)' : 'rotate(0deg)';
+            frog.style.transform = `${scale} ${rotate}`;
+        }
+
+
+        // --- Platform Generation ---
+
+        function generationLoop() {
+            if (isGameOver) return;
+            
+            if (!isGeneratingPlatform) {
+                try {
+                    const lastPlatformRect = lastPlatformElement.getBoundingClientRect();
+                    const containerRect = gameContainer.getBoundingClientRect();
+                    if (lastPlatformRect.right < containerRect.right + 200) {
+                        isGeneratingPlatform = true; // Lock
+                        createPlatform();
+                    }
+                } catch (e) {
+                    isGeneratingPlatform = false; 
+                }
+            }
+        }
+
+        function createStarterPlatform() {
+            const platform = document.createElement('div');
+            platform.classList.add('platform');
+            
+            let startBottom = 100; 
+            let startWidth = 200; 
+            
+            platform.style.left = '10px'; 
+            platform.style.bottom = startBottom + 'px';
+            platform.style.width = startWidth + 'px';
+
+            gameContainer.appendChild(platform);
+
+            lastPlatformElement = platform;
+
+            frogBottom = startBottom + 20; 
+            frog.style.bottom = frogBottom + 'px';
+        }
+
+        function createPlatform() {
+            const lastPlatformLeft = parseFloat(lastPlatformElement.style.left);
+            const lastPlatformWidth = lastPlatformElement.offsetWidth;
+            const lastPlatformBottom = parseFloat(lastPlatformElement.style.bottom);
+            const lastPlatformRight = lastPlatformLeft + lastPlatformWidth;
+
+            const platform = document.createElement('div');
+            platform.classList.add('platform');
+            
+            let minGap = 40;
+            let maxGap = 90; 
+            let newPlatformLeft = lastPlatformRight + (Math.random() * (maxGap - minGap) + minGap);
+
+            let minHeightChange = -70; 
+            let maxHeightChange = 80;  
+            let newPlatformBottom = lastPlatformBottom + (Math.random() * (maxHeightChange - minHeightChange) + minHeightChange);
+            newPlatformBottom = Math.max(80, Math.min(newPlatformBottom, 280)); 
+
+            let newPlatformWidth = Math.random() * 120 + 80; 
+            
+            platform.style.left = newPlatformLeft + 'px';
+            platform.style.bottom = newPlatformBottom + 'px';
+            platform.style.width = newPlatformWidth + 'px';
+
+            gameContainer.appendChild(platform);
+
+            // Add coins
+            let coinCount = Math.floor(newPlatformWidth / 40);
+            let coinSpacing = newPlatformWidth / (coinCount + 1);
+
+            for (let i = 1; i <= coinCount; i++) {
+                const coin = document.createElement('div');
+                coin.classList.add('coin');
+                coin.style.bottom = (newPlatformBottom + 20 + 10) + 'px'; 
+                let coinLeft = newPlatformLeft + (i * coinSpacing) - 12; 
+                coin.style.left = coinLeft + 'px';
+                
+                gameContainer.appendChild(coin);
+            }
+            
+            // 15% chance to spawn a heart
+            if (Math.random() < 0.15) { 
+                const heart = document.createElement('div');
+                heart.classList.add('heart-collectible');
+                heart.innerText = '❤️';
+                heart.style.bottom = (newPlatformBottom + 20 + 40) + 'px'; 
+                let heartLeft = newPlatformLeft + (newPlatformWidth / 2) - 30; 
+                heart.style.left = heartLeft + 'px';
+                gameContainer.appendChild(heart);
+            }
+            
+            // 10% chance to spawn a potion
+            if (Math.random() < 0.10) { 
+                const potion = document.createElement('div');
+                potion.classList.add('potion');
+                potion.innerText = '🧪'; 
+                potion.style.bottom = (newPlatformBottom + 20 + 40) + 'px'; 
+                let potionLeft = newPlatformLeft + (newPlatformWidth / 2) + 10; 
+                potion.style.left = potionLeft + 'px';
+                gameContainer.appendChild(potion);
+            }
+            
+            // 10% chance to spawn wings (NOT in hell mode)
+            if (Math.random() < 0.10 && gameMode !== 'hell') { 
+                const wings = document.createElement('div');
+                wings.classList.add('wings');
+                wings.innerText = '🕊️'; 
+                wings.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
+                let wingsLeft = newPlatformLeft + (newPlatformWidth / 2) - 12; 
+                wings.style.left = wingsLeft + 'px';
+                gameContainer.appendChild(wings);
+            }
+            
+            // 10% chance to spawn candy
+            if (Math.random() < 0.10) { 
+                const candy = document.createElement('div');
+                candy.classList.add('candy');
+                candy.innerText = '🍬'; 
+                candy.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
+                let candyLeft = newPlatformLeft + (newPlatformWidth / 2) + 30; 
+                candy.style.left = candyLeft + 'px';
+                gameContainer.appendChild(candy);
+            }
+            
+            // 10% chance to spawn a Question Mark
+            if (Math.random() < 0.10) { 
+                const qMark = document.createElement('div');
+                qMark.classList.add('question-mark');
+                qMark.innerText = '❓'; 
+                qMark.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
+                let qMarkLeft = newPlatformLeft + (newPlatformWidth / 2) - 50; 
+                qMark.style.left = qMarkLeft + 'px';
+                gameContainer.appendChild(qMark);
+            }
+            
+            // 10% chance to spawn a Bullet
+            if (Math.random() < 0.10) { 
+                const bullet = document.createElement('div');
+                bullet.classList.add('bullet-collectible');
+                bullet.innerText = '🚀'; 
+                bullet.style.bottom = (newPlatformBottom + 20 + 40) + 'px'; 
+                let bulletLeft = newPlatformLeft + (newPlatformWidth / 2) - 50; 
+                bullet.style.left = bulletLeft + 'px';
+                gameContainer.appendChild(bullet);
+            }
+            
+            // 10% chance to spawn Wrath (ONLY in hell mode)
+            if (Math.random() < 0.10 && gameMode === 'hell') { 
+                const wrath = document.createElement('div');
+                wrath.classList.add('wrath-collectible');
+                wrath.innerText = '👊'; 
+                wrath.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
+                let wrathLeft = newPlatformLeft + (newPlatformWidth / 2); 
+                wrath.style.left = wrathLeft + 'px';
+                gameContainer.appendChild(wrath);
+            }
+            
+            lastPlatformElement = platform;
+            
+            isGeneratingPlatform = false;
+        }
+
+        // ======================================================
+        // FIXED: resetGame function 
+        // ======================================================
+        function resetGame(e) {
+            // Prevent double-taps from running this twice
+            if (!isGameOver) return; 
+            
+            // 1. Stop all loops and timers
+            if (gameLoopId) cancelAnimationFrame(gameLoopId);
+            if (generationLoopTimer) clearInterval(generationLoopTimer);
+            deactivateGrow();
+            deactivateWings();
+            deactivateSpeed();
+            deactivateSquad();
+            deactivateBulletHead();
+            deactivateWrath();
+            
+            // 2. Hide game UI & message
+            messageDisplay.style.display = 'none';
+            messageDisplay.innerHTML = ''; // Clear old content
+            frog.style.display = 'none';
+            scoreDisplay.style.display = 'none';
+            heartsContainer.style.display = 'none';
+            touchControls.style.display = 'none';
+            gameTimerDisplay.style.display = 'none';
+            
+            // 3. Clear all created elements
+            document.querySelectorAll('.platform, .coin, .heart-collectible, .potion, .wings, .candy, .question-mark, .bullet-collectible, .wrath-collectible, .fireball, .fireball-warning, .frog-clone, .cloud, .ember').forEach(el => el.remove());
+
+            // 4. Reset game state variables
+            isGameOver = false;
+            frogBottom = 0;
+            frogVelocity = 0;
+            isJumping = false;
+            canTakeDamage = true;
+            score = 0;
+            health = 3;
+            maxHealth = 3;
+            isMovingLeft = false;
+            isMovingRight = false;
+            isMovingUp = false;
+            isMovingDown = false;
+            lastPlatformElement = null;
+            isGeneratingPlatform = false;
+            selectedFrogImage = '';
+            gameMode = 'classic';
+            hellModeTimeRemaining = 120;
+            lastTime = 0;
+            frog.style.transform = 'scale(1) rotate(0deg)'; 
+            frog.style.opacity = 1;
+            frogWings.style.opacity = 0.8;
+            frogRocket.style.opacity = 1;
+
+            // 5. Show Mode Select Screen
+            modeSelectScreen.style.display = 'flex';
+            
+            // 6. Add back mode listeners 
+            classicModeButton.addEventListener('click', selectClassic);
+            chaoticModeButton.addEventListener('click', selectChaotic);
+            hellModeButton.addEventListener('click', selectHellMode);
+            
+            // 7. Remove game listeners
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+            
+            // 8. Make sure background is normal
+            gameContainer.classList.remove('hell-mode-bg');
+            modeSelectScreen.classList.remove('hell-mode-bg');
+            charSelectScreen.classList.remove('hell-mode-bg');
+            explanationScreen.classList.remove('hell-mode-bg');
+        }
+
+        // ======================================================
+        // FIXED: gameOver (Hides the touch-controls layer!)
+        // ======================================================
+        function gameOver() {
+            if (isGameOver) return; 
+            isGameOver = true;
+            cancelAnimationFrame(gameLoopId);
+            clearInterval(generationLoopTimer);
+            
+            deactivateSquad(); 
+            deactivateWrath(); 
+            document.querySelectorAll('.fireball-warning').forEach(w => w.remove());
+            
+            // IMPORTANT: Hide the touch layer so we can click the button!
+            touchControls.style.display = 'none';
+
+            let gameOverText = 'Game Over!';
+            if (gameMode === 'chaotic' || gameMode === 'hell') {
+                gameOverText = `Game Over!<br>Final Score: ${score}`;
+            }
+            
+            // Clear message box and build it
+            messageDisplay.innerHTML = ''; 
+            messageDisplay.style.display = 'block';
+            
+            const textDiv = document.createElement('div');
+            textDiv.innerHTML = gameOverText;
+            messageDisplay.appendChild(textDiv);
+            
+            const br = document.createElement('br');
+            messageDisplay.appendChild(br);
+
+            const restartButton = document.createElement('button');
+            restartButton.innerText = 'Try Again';
+            
+            restartButton.addEventListener('click', resetGame);
+            
+            messageDisplay.appendChild(restartButton);
+            
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        }
+
+        // ======================================================
+        // FIXED: winGame (Hides the touch-controls layer!)
+        // ======================================================
+        function winGame() {
+            if (isGameOver) return; 
+            isGameOver = true;
+            cancelAnimationFrame(gameLoopId);
+            clearInterval(generationLoopTimer);
+            
+            deactivateSquad(); 
+            deactivateWrath();
+            document.querySelectorAll('.fireball-warning').forEach(w => w.remove());
+            
+            // IMPORTANT: Hide the touch layer so we can click the button!
+            touchControls.style.display = 'none';
+
+            // Clear message box and build it
+            messageDisplay.innerHTML = '';
+            messageDisplay.style.display = 'block';
+            
+            const img = document.createElement('img');
+            img.src = 'rich_frog.png';
+            img.alt = 'Rich Frog';
+            img.style.maxWidth = '150px';
+            img.style.height = 'auto';
+            img.style.marginBottom = '10px';
+            messageDisplay.appendChild(img);
+            
+            messageDisplay.appendChild(document.createElement('br'));
+            
+            const text = document.createElement('span');
+            text.innerText = 'You become a RICH FROG';
+            messageDisplay.appendChild(text);
+            
+            messageDisplay.appendChild(document.createElement('br'));
+
+            const restartButton = document.createElement('button');
+            restartButton.innerText = 'Play Again';
+            
+            restartButton.addEventListener('click', resetGame);
+            
+            messageDisplay.appendChild(restartButton);
+            
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        }
+
+        function selectAgwong() {
+            selectCharacter('image_031b7e.png');
+        }
+        
+        function selectMilMil() {
+            selectCharacter('image_162312.png');
+        }
+
+        function selectCharacter(imageSrc) {
+            selectedFrogImage = imageSrc;
+            
+            agwongChar.removeEventListener('click', selectAgwong);
+            milmilChar.removeEventListener('click', selectMilMil);
+            
+            charSelectScreen.style.display = 'none';
+            explanationScreen.style.display = 'flex';
+            
+            nextButton.addEventListener('click', initGame);
+        }
+
+        function initGame() {
+            nextButton.removeEventListener('click', initGame);
+            
+            explanationScreen.style.display = 'none';
+            
+            // 1. Show all game elements
+            frog.style.display = 'block';
+            scoreDisplay.style.display = 'block';
+            heartsContainer.style.display = 'block';
+            touchControls.style.display = 'block'; 
+            
+            frog.style.backgroundImage = `url('${selectedFrogImage}')`;
+
+            if (gameMode === 'classic') {
+                scoreDisplay.textContent = 'Coins: 0 / 100';
+            } else {
+                scoreDisplay.textContent = `Coins: ${score}`;
+            }
+            
+            if (gameMode === 'hell') {
+                document.querySelectorAll('.ember').forEach(ember => {
+                    ember.style.display = 'block';
+                });
+                gameTimerDisplay.style.display = 'block'; 
+                hellModeTimeRemaining = 120; 
+            } else {
+                document.querySelectorAll('.cloud').forEach(cloud => {
+                    cloud.style.display = 'block';
+                });
+                gameTimerDisplay.style.display = 'none'; // Hide timer
+            }
+            
+            // 2. Add keyboard listeners
+            document.addEventListener('keydown', handleKeyDown); 
+            document.addEventListener('keyup', handleKeyUp); 
+            
+            updateHearts(); 
+            createStarterPlatform(); 
+            
+            // 3. Scale the game AND calculate joystick center
+            scaleGame(); 
+            
+            // 4. Start the loops
+            lastTime = performance.now(); 
+            gameLoopId = requestAnimationFrame(gameLoop); 
+            generationLoopTimer = setInterval(generationLoop, 100); 
+        }
+
+        function selectMode(mode) {
+            gameMode = mode; 
+            
+            // Update explanation text
+            if (gameMode === 'hell') {
+                coinExplanation.innerText = 'Coin: Coins are for score!';
+                wingsExplanation.style.display = 'none';
+                wrathExplanation.style.display = 'flex';
+                gameContainer.classList.add('hell-mode-bg');
+                modeSelectScreen.classList.add('hell-mode-bg');
+                charSelectScreen.classList.add('hell-mode-bg');
+                explanationScreen.classList.add('hell-mode-bg');
+            } else {
+                coinExplanation.innerText = (gameMode === 'classic') ? 'Coin: Get 100 to win!' : 'Coin: Coins are for score!';
+                wingsExplanation.style.display = 'flex';
+                wrathExplanation.style.display = 'none';
+                gameContainer.classList.remove('hell-mode-bg');
+                modeSelectScreen.classList.remove('hell-mode-bg');
+                charSelectScreen.classList.remove('hell-mode-bg');
+                explanationScreen.classList.remove('hell-mode-bg');
+            }
+            
+            modeSelectScreen.style.display = 'none';
+            charSelectScreen.style.display = 'flex';
+            
+            classicModeButton.removeEventListener('click', selectClassic);
+            chaoticModeButton.removeEventListener('click', selectChaotic);
+            hellModeButton.removeEventListener('click', selectHellMode);
+            
+            agwongChar.addEventListener('click', selectAgwong);
+            milmilChar.addEventListener('click', selectMilMil);
+        }
+        
+        function selectClassic() {
+            selectMode('classic');
+        }
+        
+        function selectChaotic() {
+            selectMode('chaotic');
+        }
+        
+        function selectHellMode() {
+            selectMode('hell');
+        }
+
+        function showModeSelect() {
+            startScreen.removeEventListener('click', showModeSelect);
+            window.removeEventListener('keydown', checkStartGame); 
+
+            startScreen.style.display = 'none';
+            modeSelectScreen.style.display = 'flex';
+            
+            classicModeButton.addEventListener('click', selectClassic);
+            chaoticModeButton.addEventListener('click', selectChaotic);
+            hellModeButton.addEventListener('click', selectHellMode);
+        }
+
+        function checkStartGame(e) {
+            if (e.key === ' ' || e.key === 'Spacebar') {
+                e.preventDefault(); 
+                showModeSelect();
+            }
+        }
+        
+        function scaleGame() {
+            const gameWidth = 800;
+            const gameHeight = 400;
+            
+            const scaleX = window.innerWidth / gameWidth;
+            const scaleY = window.innerHeight / gameHeight;
+            
+            const scale = Math.min(scaleX, scaleY);
+            
+            gameContainer.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            
+            // Recalculate joystick centers
+            recalculateJoystickCenter();
+        }
+
+        function recalculateJoystickCenter() {
+            // Check if joystick is visible before calculating
+            if(!joystick.getBoundingClientRect || touchControls.style.display === 'none') return;
+            
+            const joyRect = joystick.getBoundingClientRect();
+            joystickCenterX = joyRect.left + joyRect.width / 2;
+            joystickCenterY = joyRect.top + joyRect.height / 2;
+        }
+
+        function initTouchControls() {
+            jumpButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                jump();
+            }, { passive: false });
+            
+            joystick.addEventListener('touchstart', handleTouchStart, { passive: false });
+            window.addEventListener('touchmove', handleTouchMove, { passive: false });
+            window.addEventListener('touchend', handleTouchEnd, { passive: false });
+            window.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+        }
+        
+        function handleTouchStart(e) {
+            e.preventDefault();
+            if (joystickActive) return;
+            
+            let touch = e.changedTouches[0];
+            joystickTouchId = touch.identifier;
+            joystickActive = true;
+            
+            // Recalculate center on first touch
+            recalculateJoystickCenter();
+        }
+
+        function handleTouchMove(e) {
+            if (!joystickActive) return;
+            e.preventDefault();
+            
+            let touch;
+            for(let i=0; i < e.changedTouches.length; i++) {
+                if(e.changedTouches[i].identifier === joystickTouchId) {
+                    touch = e.changedTouches[i];
+                    break;
+                }
+            }
+            if (!touch) return; 
+            
+            let deltaX = touch.clientX - joystickCenterX;
+            let deltaY = touch.clientY - joystickCenterY;
+            
+            let dist = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+            let angle = Math.atan2(deltaY, deltaX);
+            
+            if (dist > joystickMaxDist) {
+                deltaX = Math.cos(angle) * joystickMaxDist;
+                deltaY = Math.sin(angle) * joystickMaxDist;
+            }
+            
+            joystickKnob.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+            
+            const deadzone = 10;
+            isMovingLeft = (deltaX < -deadzone);
+            isMovingRight = (deltaX > deadzone);
+            isMovingUp = (deltaY < -deadzone);
+            isMovingDown = (deltaY > deadzone);
+        }
+        
+        function handleTouchEnd(e) {
+            let touchFound = false;
+            for(let i=0; i < e.changedTouches.length; i++) {
+                if(e.changedTouches[i].identifier === joystickTouchId) {
+                    touchFound = true;
+                    break;
+                }
+            }
+            if (!touchFound) return; 
+            
+            joystickActive = false;
+            joystickTouchId = null;
+            joystickKnob.style.transform = 'translate(0, 0)';
+            isMovingLeft = false;
+            isMovingRight = false;
+            isMovingUp = false;
+            isMovingDown = false;
+        }
+
+        function startGame() {
+            startScreen.addEventListener('click', showModeSelect);
+            window.addEventListener('keydown', checkStartGame);
+            
+            window.addEventListener('resize', scaleGame);
+            
+            scaleGame(); 
+            initTouchControls();
+        }
+
+        // Run the setup
+        startGame();
+    </script>
+</body>
+</html>
