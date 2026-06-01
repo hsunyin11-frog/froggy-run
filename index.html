@@ -31,7 +31,76 @@
             transform-origin: center center;
             transition: background-color 0.5s, border-color 0.5s;
         }
+
+        /* --- Auth Screen Styles --- */
+        #auth-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #add8e6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        #auth-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            border: 4px solid #8B4513;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        #auth-box h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #username-input {
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #8B4513;
+            width: 90%;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .auth-btn {
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .auth-btn:active {
+            transform: scale(0.95);
+        }
+
+        #login-btn { background-color: #4CAF50; width: 48%; }
+        #login-btn:hover { background-color: #45a049; }
         
+        #signup-btn { background-color: #FF9800; width: 48%; }
+        #signup-btn:hover { background-color: #F57C00; }
+
+        #guest-btn { background-color: #555; width: 100%; margin-top: 15px; }
+        #guest-btn:hover { background-color: #333; }
+
+        #auth-message {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+        
+        /* --- Homepage Styles --- */
         #start-screen {
             position: absolute;
             width: 100%;
@@ -43,44 +112,214 @@
             align-items: center;
             z-index: 100;
             text-align: center;
-            cursor: pointer;
         }
-        
+
         #start-screen img {
             width: 100%; 
             height: 100%;
             object-fit: cover; 
-        }
-        
-        #start-screen-text {
-            position: absolute; 
-            bottom: 30px; 
-            font-size: 30px;
-            font-weight: bold;
-            color: #FFFFFF;
-            background-color: rgba(0, 0, 0, 0.5); 
-            padding: 10px 20px;
-            border-radius: 10px;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 99;
         }
 
-        #mode-select-screen {
+        #player-profile {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            z-index: 101;
+            background: rgba(0,0,0,0.4);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+        
+        #start-buttons {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 101;
+        }
+
+        #home-play-button, #home-shop-button {
+            font-size: 32px;
+            padding: 15px 40px;
+            border: 4px solid #fff;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        #home-play-button {
+            background-color: #4CAF50;
+            animation: pulse 1.5s infinite;
+        }
+
+        #home-play-button:hover {
+            background-color: #45a049;
+        }
+
+        #home-shop-button {
+            background-color: #FF9800;
+        }
+
+        #home-shop-button:hover {
+            background-color: #F57C00;
+            transform: scale(1.05);
+        }
+        
+        /* --- Shop & Gacha Screen Styles --- */
+        #shop-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #f4e1d2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 20px;
+            box-sizing: border-box;
+            z-index: 105;
+        }
+
+        #shop-screen h2 {
+            font-size: 36px;
+            color: #8B4513;
+            margin: 0 0 10px 0;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        #shop-coins-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            background-color: rgba(255,255,255,0.6);
+            padding: 5px 15px;
+            border-radius: 10px;
+            border: 2px solid #8B4513;
+        }
+
+        #gacha-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            border: 4px solid #9C27B0;
+            width: 60%;
+            max-width: 400px;
+        }
+
+        #gacha-button {
+            background-color: #9C27B0;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        #gacha-button:hover {
+            background-color: #7B1FA2;
+        }
+        
+        #gacha-button:active {
+            transform: scale(0.95);
+        }
+
+        #gacha-result {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #gacha-result img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border: 3px dashed #9C27B0;
+            border-radius: 10px;
+            background-color: #f3e5f5;
+            padding: 5px;
+        }
+
+        #gacha-result-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #9C27B0;
+            margin: 5px 0 0 0;
+        }
+
+        /* Navigation Buttons - Pinned to bottom */
+        .nav-button {
+            position: absolute;
+            bottom: 20px;
+            font-size: 20px;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 10px;
+            background-color: #8B4513;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #A0522D;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Existing Screens (Mode, Char, Outfit, Rules) --- */
+        #mode-select-screen, #char-select-screen, #outfit-select-screen {
             position: absolute;
             width: 100%;
             height: 100%;
             background-color: #add8e6;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+            padding-top: 30px;
+            box-sizing: border-box;
             z-index: 99;
             transition: background-color 0.5s;
+        }
+
+        #char-select-screen, #outfit-select-screen {
+            z-index: 98;
+        }
+
+        #mode-select-screen h2, #char-select-screen h2, #outfit-select-screen h2 {
+            font-size: 36px;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
         }
 
         .mode-card {
@@ -95,9 +334,9 @@
             margin-bottom: 10px;
         }
         
-        .mode-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        .mode-card:hover, .char-card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
         .mode-card h3 {
@@ -112,28 +351,17 @@
             margin: 0;
         }
 
-        #char-select-screen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #add8e6;
+        #char-grid, #outfit-grid {
             display: flex;
-            flex-direction: column;
+            gap: 15px;
+            flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
-            z-index: 98;
-            transition: background-color 0.5s;
-        }
-
-        #char-select-screen h2 {
-            font-size: 40px;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        #char-grid {
-            display: flex;
-            gap: 20px;
+            max-width: 90%;
+            max-height: 240px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 10px;
+            align-content: flex-start;
         }
 
         .char-card {
@@ -144,21 +372,17 @@
             text-align: center;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .char-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            width: 120px;
         }
 
         .char-card img {
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             object-fit: contain;
         }
         
         .char-card p {
-            font-size: 20px;
+            font-size: 14px;
             font-weight: bold;
             color: #333;
             margin: 5px 0 0 0;
@@ -242,7 +466,6 @@
             height: 100%;
             z-index: 50;
             display: none; 
-            /* Let taps pass through the empty parts of this container! */
             pointer-events: none; 
         }
         
@@ -254,7 +477,6 @@
             height: 120px;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 50%;
-            /* Make joystick explicitly clickable */
             pointer-events: auto; 
         }
         
@@ -284,7 +506,6 @@
             font-weight: bold;
             color: white;
             border: 4px solid rgba(255,255,255,0.7);
-            /* Make button explicitly clickable */
             pointer-events: auto; 
         }
 
@@ -364,34 +585,14 @@
             z-index: 6; 
         }
 
-        .heart-collectible {
-            position: absolute;
-            font-size: 24px;
-            left: 800px; 
-            z-index: 6;
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        .potion {
+        .heart-collectible, .potion, .wings, .candy, .bullet-collectible, .wrath-collectible {
             position: absolute;
             font-size: 24px;
             left: 800px; 
             z-index: 6;
         }
 
-        .wings {
-            position: absolute;
-            font-size: 24px;
-            left: 800px; 
-            z-index: 6;
-        }
-
-        .candy {
-            position: absolute;
-            font-size: 24px;
-            left: 800px; 
-            z-index: 6;
-        }
+        .heart-collectible { text-shadow: 0 0 5px rgba(0,0,0,0.5); }
         
         .question-mark {
             position: absolute;
@@ -406,13 +607,6 @@
             line-height: 28px;
             border-radius: 50%;
             font-weight: bold;
-        }
-        
-        .bullet-collectible {
-            position: absolute;
-            font-size: 24px;
-            left: 800px;
-            z-index: 6;
         }
         
         .frog-clone {
@@ -432,13 +626,6 @@
             font-size: 30px;
             z-index: 20; 
             text-shadow: 0 0 5px rgba(255,0,0,0.5);
-        }
-        
-        .wrath-collectible {
-            position: absolute;
-            font-size: 24px;
-            left: 800px;
-            z-index: 6;
         }
         
         .fireball-warning {
@@ -496,10 +683,11 @@
             text-align: center;
             display: none; 
             z-index: 30;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            pointer-events: auto; /* Ensure message container captures clicks */
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            pointer-events: auto;
+            border: 4px solid #8B4513;
         }
 
         #message img {
@@ -509,17 +697,27 @@
         }
         
         #message button {
-            font-size: 24px;
-            padding: 10px 30px;
+            font-size: 20px;
+            padding: 10px 20px;
             border: none;
             border-radius: 10px;
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 15px;
+            font-weight: bold;
         }
+
+        #message button.secondary {
+            background-color: #555;
+        }
+
         #message button:hover {
             background-color: #45a049;
+        }
+        #message button.secondary:hover {
+            background-color: #333;
         }
         
         .cloud {
@@ -541,47 +739,17 @@
             border-radius: 50%;
         }
 
-        .cloud::before {
-            width: 100px;
-            height: 100px;
-            top: -50px;
-            left: 20px;
-        }
-
-        .cloud::after {
-            width: 120px;
-            height: 120px;
-            top: -60px;
-            right: 20px;
-        }
+        .cloud::before { width: 100px; height: 100px; top: -50px; left: 20px; }
+        .cloud::after { width: 120px; height: 120px; top: -60px; right: 20px; }
 
         @keyframes drift {
-            from {
-                transform: translateX(800px); 
-            }
-            to {
-                transform: translateX(-300px); 
-            }
+            from { transform: translateX(800px); }
+            to { transform: translateX(-300px); }
         }
 
-        #cloud1 {
-            top: 50px;
-            animation-duration: 30s; 
-            animation-delay: -5s; 
-        }
-
-        #cloud2 {
-            top: 120px;
-            animation-duration: 40s; 
-            animation-delay: -15s; 
-            transform: scale(0.8); 
-        }
-
-        #cloud3 {
-            top: 80px;
-            animation-duration: 25s; 
-            animation-delay: -10s;
-        }
+        #cloud1 { top: 50px; animation-duration: 30s; animation-delay: -5s; }
+        #cloud2 { top: 120px; animation-duration: 40s; animation-delay: -15s; transform: scale(0.8); }
+        #cloud3 { top: 80px; animation-duration: 25s; animation-delay: -10s; }
         
         .ember {
             position: absolute;
@@ -597,14 +765,8 @@
         }
 
         @keyframes floatUp {
-            from {
-                transform: translateY(400px) translateX(0); 
-                opacity: 0.8;
-            }
-            to {
-                transform: translateY(-50px) translateX(20px); 
-                opacity: 0;
-            }
+            from { transform: translateY(400px) translateX(0); opacity: 0.8; }
+            to { transform: translateY(-50px) translateX(20px); opacity: 0; }
         }
 
         #ember1 { animation-duration: 8s; animation-delay: -1s; left: 10%; }
@@ -613,12 +775,13 @@
         #ember4 { animation-duration: 9s; animation-delay: -4s; left: 90%; }
         
         .hell-mode-bg {
-            background: linear-gradient(to bottom, #1a0000 0%, #2c1a1a 100%);
-            border-color: #ff4d4d;
+            background: linear-gradient(to bottom, #1a0000 0%, #2c1a1a 100%) !important;
+            border-color: #ff4d4d !important;
         }
         
         .hell-mode-bg #mode-select-screen,
         .hell-mode-bg #char-select-screen,
+        .hell-mode-bg #outfit-select-screen,
         .hell-mode-bg #explanation-screen {
             background: linear-gradient(to bottom, #1a0000 0%, #2c1a1a 100%);
         }
@@ -630,6 +793,7 @@
         .hell-mode-bg #score,
         .hell-mode-bg #mode-select-screen h2,
         .hell-mode-bg #char-select-screen h2,
+        .hell-mode-bg #outfit-select-screen h2,
         .hell-mode-bg #explanation-screen h2,
         .hell-mode-bg #game-timer { 
             color: #ffadad;
@@ -658,9 +822,43 @@
 <body>
     <div id="game-container">
         
-        <div id="start-screen">
+        <div id="auth-screen">
+            <div id="auth-box">
+                <h2>Welcome to<br>Froggy Run</h2>
+                <input type="text" id="username-input" placeholder="Enter Username..." maxlength="15">
+                <div style="display:flex; justify-content: space-between; gap: 10px;">
+                    <button id="login-btn" class="auth-btn">Log In</button>
+                    <button id="signup-btn" class="auth-btn">Sign Up</button>
+                </div>
+                <div style="margin: 20px 0; width: 100%; height: 2px; background: #ccc;"></div>
+                <button id="guest-btn" class="auth-btn" style="background-color: #555; width: 100%;">Play as Guest</button>
+                <p id="auth-message"></p>
+            </div>
+        </div>
+
+        <div id="start-screen" style="display: none;">
+            <div id="player-profile">👤 <span id="display-username">Guest</span></div>
             <img src="froggy_run_start.png" alt="Froggy Run Start Screen">
-            <p id="start-screen-text">Press to Start</p>
+            <div id="start-buttons">
+                <button id="home-play-button">PLAY</button>
+                <button id="home-shop-button">SHOP</button>
+            </div>
+        </div>
+
+        <div id="shop-screen" style="display: none;">
+            <h2>Froggy Gacha</h2>
+            <div id="shop-coins-display">Your Coins: 0 🪙</div>
+            
+            <div id="gacha-container">
+                <button id="gacha-button">Pull Outfit (300 🪙)</button>
+                <div id="gacha-result">
+                    <h3 style="margin:0 0 10px 0; color:#333;">You Unlocked:</h3>
+                    <img id="gacha-result-img" src="" alt="Pulled Item">
+                    <p id="gacha-result-name"></p>
+                </div>
+            </div>
+            
+            <button class="nav-button" id="shop-back-button">Back to Home</button>
         </div>
         
         <div id="mode-select-screen" style="display: none;">
@@ -677,6 +875,7 @@
                 <h3>Hell Mode</h3>
                 <p>Fire rains from the sky! 2:00 time limit.</p>
             </div>
+            <button class="nav-button" id="mode-back-button">Back to Home</button>
         </div>
 
         <div id="char-select-screen" style="display: none;">
@@ -691,6 +890,14 @@
                     <p>MilMil</p>
                 </div>
             </div>
+            <button class="nav-button" id="char-back-button">Back</button>
+        </div>
+
+        <div id="outfit-select-screen" style="display: none;">
+            <h2>Choose Your Outfit</h2>
+            <div id="outfit-grid">
+                </div>
+            <button class="nav-button" id="outfit-back-button">Back</button>
         </div>
         
         <div id="explanation-screen" style="display: none;">
@@ -742,7 +949,7 @@
                 </div>
                 
             </div>
-            <button id="next-button">Next</button>
+            <button id="next-button">Start Game</button>
         </div>
         
         <div class="cloud" id="cloud1"></div>
@@ -780,32 +987,145 @@
         const scoreDisplay = document.getElementById('score');
         const messageDisplay = document.getElementById('message');
         const heartsContainer = document.getElementById('hearts-container');
+        
+        // Auth UI
+        const authScreen = document.getElementById('auth-screen');
+        const usernameInput = document.getElementById('username-input');
+        const loginBtn = document.getElementById('login-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        const guestBtn = document.getElementById('guest-btn');
+        const authMessage = document.getElementById('auth-message');
+        const displayUsername = document.getElementById('display-username');
+
+        // Screens
         const startScreen = document.getElementById('start-screen');
+        const shopScreen = document.getElementById('shop-screen');
+        const modeSelectScreen = document.getElementById('mode-select-screen');
         const charSelectScreen = document.getElementById('char-select-screen');
+        const outfitSelectScreen = document.getElementById('outfit-select-screen');
+        const explanationScreen = document.getElementById('explanation-screen');
+        
+        // Characters
         const agwongChar = document.getElementById('agwong');
         const milmilChar = document.getElementById('milmil');
+        
+        // Outfits
+        const outfitGrid = document.getElementById('outfit-grid');
+        
         const frogWings = document.getElementById('frog-wings');
         const frogRocket = document.getElementById('frog-rocket');
-        const modeSelectScreen = document.getElementById('mode-select-screen');
+        
+        // Buttons & Nav
         const classicModeButton = document.getElementById('classic-mode');
         const chaoticModeButton = document.getElementById('chaotic-mode');
-        
-        const explanationScreen = document.getElementById('explanation-screen');
-        const nextButton = document.getElementById('next-button');
-        const coinExplanation = document.getElementById('coin-explanation');
-        
         const hellModeButton = document.getElementById('hell-mode');
+        const nextButton = document.getElementById('next-button');
+        const modeBackButton = document.getElementById('mode-back-button');
+        const charBackButton = document.getElementById('char-back-button');
+        const outfitBackButton = document.getElementById('outfit-back-button');
+        const homePlayButton = document.getElementById('home-play-button');
+        const homeShopButton = document.getElementById('home-shop-button');
+        const shopBackButton = document.getElementById('shop-back-button');
+        
+        // UI Text
+        const coinExplanation = document.getElementById('coin-explanation');
         const wingsExplanation = document.getElementById('wings-explanation');
         const wrathExplanation = document.getElementById('wrath-explanation');
+        const shopCoinsDisplay = document.getElementById('shop-coins-display');
         
+        // Controls & Timer
         const touchControls = document.getElementById('touch-controls');
         const joystick = document.getElementById('joystick');
         const joystickKnob = document.getElementById('joystick-knob');
         const jumpButton = document.getElementById('jump-button');
-        
         const gameTimerDisplay = document.getElementById('game-timer');
 
-        // Game settings
+        // Gacha Elements
+        const gachaButton = document.getElementById('gacha-button');
+        const gachaResult = document.getElementById('gacha-result');
+        const gachaResultImg = document.getElementById('gacha-result-img');
+        const gachaResultName = document.getElementById('gacha-result-name');
+
+        // Exact names based on image attachments
+        const allOutfits = [
+            { id: 'bee', name: 'Bumblebee Outfit', src: 'agwong-bee.png' },
+            { id: 'princess', name: 'Princess Outfit', src: 'agwong-princess.png' },
+            { id: 'prada', name: 'Prada Outfit', src: 'agwong-prada.png' },
+            { id: 'gucci', name: 'Gucci Outfit', src: 'agwong-gucci.png' }
+        ];
+
+        // --- AUTH & SAVE SYSTEM ---
+        let usersDB = JSON.parse(localStorage.getItem('froggyUsers')) || {};
+        let currentUser = null;
+        let totalAccumulatedCoins = 0;
+        let unlockedOutfits = []; 
+        const gachaCost = 300;
+
+        function showAuthMsg(msg, color) {
+            authMessage.innerText = msg;
+            authMessage.style.color = color;
+        }
+
+        function loadUserData(username) {
+            currentUser = username;
+            const data = usersDB[username];
+            totalAccumulatedCoins = data.coins || 0;
+            const savedOutfitIds = data.outfits || [];
+            unlockedOutfits = allOutfits.filter(o => savedOutfitIds.includes(o.id));
+            displayUsername.innerText = currentUser;
+        }
+
+        function saveUserData() {
+            if (currentUser && currentUser !== 'Guest') {
+                usersDB[currentUser] = {
+                    coins: totalAccumulatedCoins,
+                    outfits: unlockedOutfits.map(o => o.id)
+                };
+                localStorage.setItem('froggyUsers', JSON.stringify(usersDB));
+            }
+        }
+
+        function proceedToHome() {
+            authScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+        }
+
+        loginBtn.addEventListener('click', () => {
+            const user = usernameInput.value.trim();
+            if (!user) return showAuthMsg("Please enter a username.", "red");
+            if (usersDB[user]) {
+                loadUserData(user);
+                proceedToHome();
+            } else {
+                showAuthMsg("Username not found. Try signing up!", "red");
+            }
+        });
+
+        signupBtn.addEventListener('click', () => {
+            const user = usernameInput.value.trim();
+            if (!user) return showAuthMsg("Please enter a username.", "red");
+            if (usersDB[user]) {
+                showAuthMsg("Username exists. Try logging in!", "red");
+            } else {
+                currentUser = user;
+                totalAccumulatedCoins = 0;
+                unlockedOutfits = [];
+                displayUsername.innerText = currentUser;
+                saveUserData(); // Create the entry
+                proceedToHome();
+            }
+        });
+
+        guestBtn.addEventListener('click', () => {
+            currentUser = 'Guest';
+            totalAccumulatedCoins = 0;
+            unlockedOutfits = [];
+            displayUsername.innerText = "Guest";
+            proceedToHome();
+        });
+
+
+        // --- Game settings ---
         const gravity = 1.0; 
         const jumpHeight = 20; 
         const superJumpHeight = 30;
@@ -839,7 +1159,8 @@
         
         let isGeneratingPlatform = false; 
         
-        let selectedFrogImage = '';
+        let baseFrogImage = ''; 
+        let selectedFrogImage = ''; 
         let gameMode = 'classic'; 
         
         // Power-up states
@@ -870,6 +1191,59 @@
         let joystickCenterX = 0;
         let joystickCenterY = 0;
         const joystickMaxDist = 30; 
+
+        // --- GACHA FUNCTIONS ---
+        
+        function updateShopCoins() {
+            shopCoinsDisplay.innerText = `Your Coins: ${totalAccumulatedCoins} 🪙`;
+            if (unlockedOutfits.length === allOutfits.length) {
+                gachaButton.innerText = "All Outfits Unlocked!";
+                gachaButton.disabled = true;
+                gachaButton.style.backgroundColor = '#ccc';
+                gachaButton.style.cursor = 'not-allowed';
+            } else {
+                gachaButton.innerText = `Pull Outfit (${gachaCost} 🪙)`;
+                gachaButton.disabled = false;
+                gachaButton.style.backgroundColor = '#9C27B0';
+                gachaButton.style.cursor = 'pointer';
+            }
+        }
+
+        gachaButton.addEventListener('click', () => {
+            const availableOutfits = allOutfits.filter(outfit => !unlockedOutfits.some(u => u.id === outfit.id));
+            if (availableOutfits.length === 0) return; 
+
+            if (totalAccumulatedCoins >= gachaCost) {
+                totalAccumulatedCoins -= gachaCost;
+                
+                const randomIndex = Math.floor(Math.random() * availableOutfits.length);
+                const pulledOutfit = availableOutfits[randomIndex];
+                
+                unlockedOutfits.push(pulledOutfit);
+                saveUserData(); // Save pulling outcome to DB
+                updateShopCoins();
+
+                gachaResultImg.src = pulledOutfit.src;
+                gachaResultName.innerText = pulledOutfit.name;
+                
+                gachaResult.style.display = 'none'; 
+                setTimeout(() => { gachaResult.style.display = 'block'; }, 10);
+            } else {
+                alert(`Not enough coins! You need ${gachaCost} coins to pull.`);
+            }
+        });
+
+        function showShop() {
+            startScreen.style.display = 'none';
+            shopScreen.style.display = 'flex';
+            gachaResult.style.display = 'none'; 
+            updateShopCoins();
+        }
+
+        function hideShop() {
+            shopScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+        }
 
         // --- GAME FUNCTIONS ---
 
@@ -917,46 +1291,34 @@
             }
         }
         
-        // MASTER GAME LOOP
         function gameLoop(timestamp) {
             if (isGameOver) {
                 cancelAnimationFrame(gameLoopId); 
                 return;
             }
             
-            if (!lastTime) {
-                lastTime = timestamp;
-            }
+            if (!lastTime) lastTime = timestamp;
             let deltaTime = (timestamp - lastTime) / 1000; 
             lastTime = timestamp;
 
-            // --- 1. Physics ---
+            // 1. Physics
             if (hasBulletHead) {
                 frogVelocity = 0;
-                if (isMovingUp) {
-                    frogVelocity = 6;
-                }
-                if (isMovingDown) {
-                    frogVelocity = -6;
-                }
+                if (isMovingUp) frogVelocity = 6;
+                if (isMovingDown) frogVelocity = -6;
                 newFrogBottom = frogBottom + frogVelocity;
             } else {
                 frogVelocity -= gravity; 
-
                 if (hasWings) {
-                    if (isMovingUp) {
-                        frogVelocity += 1.5; 
-                    }
-                    if (isMovingDown) {
-                        frogVelocity -= 1.0; 
-                    }
+                    if (isMovingUp) frogVelocity += 1.5; 
+                    if (isMovingDown) frogVelocity -= 1.0; 
                     if(frogVelocity > 6) frogVelocity = 6; 
                     if(frogVelocity < -8) frogVelocity = -8; 
                 }
                 newFrogBottom = frogBottom + frogVelocity;
             }
             
-            // --- 2. Landing Logic ---
+            // 2. Landing Logic
             let potentialLandingTop = spikes.offsetHeight; 
             let onSafePlatform = false;
 
@@ -978,27 +1340,22 @@
                 });
             }
 
-            // --- 3. Apply Landing/Collision ---
+            // 3. Apply Landing/Collision
             if (frogVelocity < 0 && newFrogBottom <= potentialLandingTop) {
                 newFrogBottom = potentialLandingTop; 
-                
                 if (hasWings || hasBulletHead) {
                     frogVelocity = (hasWings) ? 8 : 0; 
-                    if (canTakeDamage) {
-                        newFrogBottom = handleSpikeDamage(); 
-                    }
+                    if (canTakeDamage) newFrogBottom = handleSpikeDamage(); 
                 } else {
                     frogVelocity = 0;
                     isJumping = false; 
-                    if (!onSafePlatform && canTakeDamage) {
-                        newFrogBottom = handleSpikeDamage(); 
-                    }
+                    if (!onSafePlatform && canTakeDamage) newFrogBottom = handleSpikeDamage(); 
                 }
             } else if (!hasWings && !hasBulletHead) { 
                 isJumping = true;
             }
 
-            // --- 4. Ceiling Check ---
+            // 4. Ceiling Check
             if (!isBig) {
                 let newFrogTop = newFrogBottom + frogHeight;
                 if (newFrogTop > gameContainer.offsetHeight) {
@@ -1007,11 +1364,11 @@
                 }
             }
             
-            // --- 5. Final Position Update ---
+            // 5. Final Position Update
             frogBottom = newFrogBottom;
             frog.style.bottom = frogBottom + 'px';
             
-            // --- 6. Scrolling ---
+            // 6. Scrolling
             let speedMultiplier = 1;
             if (isFastCandy) speedMultiplier *= 2;
             if (isFastBullet) speedMultiplier *= 2;
@@ -1024,25 +1381,19 @@
             if (isMovingRight) {
                 elementsToScroll.forEach(el => {
                     let newLeft = parseFloat(el.style.left) - currentScrollSpeed;
-                    if (newLeft < -el.offsetWidth) {
-                        el.remove();
-                    } else {
-                        el.style.left = newLeft + 'px';
-                    }
+                    if (newLeft < -el.offsetWidth) el.remove();
+                    else el.style.left = newLeft + 'px';
                 });
             }
             if (isMovingLeft) {
                 elementsToScroll.forEach(el => {
                     let newLeft = parseFloat(el.style.left) + currentScrollSpeed;
-                    if (newLeft > gameContainer.offsetWidth) {
-                        el.remove();
-                    } else {
-                        el.style.left = newLeft + 'px';
-                    }
+                    if (newLeft > gameContainer.offsetWidth) el.remove();
+                    else el.style.left = newLeft + 'px';
                 });
             }
             
-            // --- 7. Fireball Loop ---
+            // 7. Fireball Loop
             document.querySelectorAll('.fireball').forEach(fireball => {
                 let newTop = parseFloat(fireball.style.top) + 5; 
                 fireball.style.top = newTop + 'px';
@@ -1060,12 +1411,10 @@
                     newFrogBottom = handleSpikeDamage(); 
                 }
                 
-                if (newTop > 400) {
-                    fireball.remove();
-                }
+                if (newTop > 400) fireball.remove();
             });
             
-            // --- 8. Update Squad Position ---
+            // 8. Update Squad Position
             if (clone1) {
                 clone1.style.bottom = (frogBottom + 40) + 'px';
                 clone1.style.left = '20px'; 
@@ -1077,7 +1426,7 @@
                 clone2.style.transform = frog.style.transform; 
             }
             
-            // --- 9. Collision Checks ---
+            // 9. Collision Checks
             checkCoinCollision();
             checkHeartCollision();
             checkPotionCollision();
@@ -1087,24 +1436,18 @@
             checkBulletHeadCollision(); 
             checkWrathCollision(); 
             
-            // --- 10. Game Timer ---
+            // 10. Game Timer
             if (gameMode === 'hell') {
                 hellModeTimeRemaining -= deltaTime;
                 updateTimerDisplay();
-                if (hellModeTimeRemaining <= 0) {
-                    gameOver();
-                }
+                if (hellModeTimeRemaining <= 0) gameOver();
             }
             
-            if (frogBottom < -frogHeight) { 
-                 gameOver();
-            }
+            if (frogBottom < -frogHeight) gameOver();
             
-            // --- 11. Request Next Frame ---
+            // 11. Request Next Frame
             gameLoopId = requestAnimationFrame(gameLoop);
         }
-        
-        // --- Power-up & Collision Functions ---
         
         function handleSpikeDamage() {
             health--;
@@ -1241,9 +1584,7 @@
         }
 
         function activateGrow() {
-            if (growTimer) {
-                clearTimeout(growTimer);
-            }
+            if (growTimer) clearTimeout(growTimer);
             if (!isBig) {
                 isBig = true;
                 frogWidth = 160; 
@@ -1312,11 +1653,9 @@
             if(wingsTimer) clearTimeout(wingsTimer); 
             blinkTimer = null;
             wingsTimer = null;
-            
             hasWings = false;
             frog.style.opacity = 1; 
             frogWings.style.display = 'none'; 
-            
             isMovingUp = false;
             isMovingDown = false;
         }
@@ -1340,9 +1679,7 @@
         }
 
         function activateSpeed() {
-            if (speedTimer) {
-                clearTimeout(speedTimer);
-            }
+            if (speedTimer) clearTimeout(speedTimer);
             isFastCandy = true;
             speedTimer = setTimeout(deactivateSpeed, 5000); 
         }
@@ -1380,26 +1717,18 @@
                 clone1.style.backgroundImage = `url('${selectedFrogImage}')`;
                 gameContainer.appendChild(clone1);
             }
-            
             if (!clone2) {
                 clone2 = document.createElement('div');
                 clone2.classList.add('frog-clone');
                 clone2.style.backgroundImage = `url('${selectedFrogImage}')`;
                 gameContainer.appendChild(clone2);
             }
-
             squadTimer = setTimeout(deactivateSquad, 8000); 
         }
 
         function deactivateSquad() {
-            if (clone1) {
-                clone1.remove();
-                clone1 = null;
-            }
-            if (clone2) {
-                clone2.remove();
-                clone2 = null;
-            }
+            if (clone1) { clone1.remove(); clone1 = null; }
+            if (clone2) { clone2.remove(); clone2 = null; }
             if(squadTimer) clearTimeout(squadTimer);
             squadTimer = null;
         }
@@ -1456,14 +1785,11 @@
             if(bulletHeadTimer) clearTimeout(bulletHeadTimer);
             bulletBlinkTimer = null;
             bulletHeadTimer = null;
-            
             hasBulletHead = false;
             isFastBullet = false; 
-
             frog.style.opacity = 1;
             frogRocket.style.display = 'none'; 
             updateFrogTransform(); 
-
             isMovingUp = false;
             isMovingDown = false;
         }
@@ -1503,16 +1829,12 @@
         
         function spawnFireball() {
             if (isGameOver) return;
-            
             const fireballX = Math.random() * (gameContainer.offsetWidth - 30);
-            
             let worldOffset = 0;
             const firstPlatform = document.querySelector('.platform');
             if (firstPlatform) {
                 worldOffset = parseFloat(firstPlatform.style.left);
             }
-            
-            const worldX = fireballX - worldOffset;
             
             const warning = document.createElement('div');
             warning.classList.add('fireball-warning');
@@ -1524,14 +1846,12 @@
             setTimeout(() => {
                 warning.remove();
                 if (isGameOver) return;
-                
                 const fireball = document.createElement('div');
                 fireball.classList.add('fireball');
                 fireball.innerText = '🔥';
                 fireball.style.top = '0px'; 
                 fireball.style.left = (worldOffset + fireballX) + 'px';
                 gameContainer.appendChild(fireball);
-                
             }, 1000); 
         }
 
@@ -1541,12 +1861,10 @@
             frog.style.transform = `${scale} ${rotate}`;
         }
 
-
         // --- Platform Generation ---
 
         function generationLoop() {
             if (isGameOver) return;
-            
             if (!isGeneratingPlatform) {
                 try {
                     const lastPlatformRect = lastPlatformElement.getBoundingClientRect();
@@ -1573,7 +1891,6 @@
             platform.style.width = startWidth + 'px';
 
             gameContainer.appendChild(platform);
-
             lastPlatformElement = platform;
 
             frogBottom = startBottom + 20; 
@@ -1616,100 +1933,75 @@
                 coin.style.bottom = (newPlatformBottom + 20 + 10) + 'px'; 
                 let coinLeft = newPlatformLeft + (i * coinSpacing) - 12; 
                 coin.style.left = coinLeft + 'px';
-                
                 gameContainer.appendChild(coin);
             }
             
-            // 15% chance to spawn a heart
+            // Collectibles chances
             if (Math.random() < 0.15) { 
                 const heart = document.createElement('div');
                 heart.classList.add('heart-collectible');
                 heart.innerText = '❤️';
                 heart.style.bottom = (newPlatformBottom + 20 + 40) + 'px'; 
-                let heartLeft = newPlatformLeft + (newPlatformWidth / 2) - 30; 
-                heart.style.left = heartLeft + 'px';
+                heart.style.left = (newPlatformLeft + (newPlatformWidth / 2) - 30) + 'px';
                 gameContainer.appendChild(heart);
             }
-            
-            // 10% chance to spawn a potion
             if (Math.random() < 0.10) { 
                 const potion = document.createElement('div');
                 potion.classList.add('potion');
                 potion.innerText = '🧪'; 
                 potion.style.bottom = (newPlatformBottom + 20 + 40) + 'px'; 
-                let potionLeft = newPlatformLeft + (newPlatformWidth / 2) + 10; 
-                potion.style.left = potionLeft + 'px';
+                potion.style.left = (newPlatformLeft + (newPlatformWidth / 2) + 10) + 'px';
                 gameContainer.appendChild(potion);
             }
-            
-            // 10% chance to spawn wings (NOT in hell mode)
             if (Math.random() < 0.10 && gameMode !== 'hell') { 
                 const wings = document.createElement('div');
                 wings.classList.add('wings');
                 wings.innerText = '🕊️'; 
                 wings.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
-                let wingsLeft = newPlatformLeft + (newPlatformWidth / 2) - 12; 
-                wings.style.left = wingsLeft + 'px';
+                wings.style.left = (newPlatformLeft + (newPlatformWidth / 2) - 12) + 'px';
                 gameContainer.appendChild(wings);
             }
-            
-            // 10% chance to spawn candy
             if (Math.random() < 0.10) { 
                 const candy = document.createElement('div');
                 candy.classList.add('candy');
                 candy.innerText = '🍬'; 
                 candy.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
-                let candyLeft = newPlatformLeft + (newPlatformWidth / 2) + 30; 
-                candy.style.left = candyLeft + 'px';
+                candy.style.left = (newPlatformLeft + (newPlatformWidth / 2) + 30) + 'px';
                 gameContainer.appendChild(candy);
             }
-            
-            // 10% chance to spawn a Question Mark
             if (Math.random() < 0.10) { 
                 const qMark = document.createElement('div');
                 qMark.classList.add('question-mark');
                 qMark.innerText = '❓'; 
                 qMark.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
-                let qMarkLeft = newPlatformLeft + (newPlatformWidth / 2) - 50; 
-                qMark.style.left = qMarkLeft + 'px';
+                qMark.style.left = (newPlatformLeft + (newPlatformWidth / 2) - 50) + 'px';
                 gameContainer.appendChild(qMark);
             }
-            
-            // 10% chance to spawn a Bullet
             if (Math.random() < 0.10) { 
                 const bullet = document.createElement('div');
                 bullet.classList.add('bullet-collectible');
                 bullet.innerText = '🚀'; 
                 bullet.style.bottom = (newPlatformBottom + 20 + 40) + 'px'; 
-                let bulletLeft = newPlatformLeft + (newPlatformWidth / 2) - 50; 
-                bullet.style.left = bulletLeft + 'px';
+                bullet.style.left = (newPlatformLeft + (newPlatformWidth / 2) - 50) + 'px';
                 gameContainer.appendChild(bullet);
             }
-            
-            // 10% chance to spawn Wrath (ONLY in hell mode)
             if (Math.random() < 0.10 && gameMode === 'hell') { 
                 const wrath = document.createElement('div');
                 wrath.classList.add('wrath-collectible');
                 wrath.innerText = '👊'; 
                 wrath.style.bottom = (newPlatformBottom + 20 + 70) + 'px'; 
-                let wrathLeft = newPlatformLeft + (newPlatformWidth / 2); 
-                wrath.style.left = wrathLeft + 'px';
+                wrath.style.left = (newPlatformLeft + (newPlatformWidth / 2)) + 'px';
                 gameContainer.appendChild(wrath);
             }
             
             lastPlatformElement = platform;
-            
             isGeneratingPlatform = false;
         }
 
         // ======================================================
-        // FIXED: resetGame function 
-        // ======================================================
-        function resetGame(e) {
-            // Prevent double-taps from running this twice
+        function resetGame(e, returnToHome = false) {
             if (!isGameOver) return; 
             
-            // 1. Stop all loops and timers
             if (gameLoopId) cancelAnimationFrame(gameLoopId);
             if (generationLoopTimer) clearInterval(generationLoopTimer);
             deactivateGrow();
@@ -1719,19 +2011,16 @@
             deactivateBulletHead();
             deactivateWrath();
             
-            // 2. Hide game UI & message
             messageDisplay.style.display = 'none';
-            messageDisplay.innerHTML = ''; // Clear old content
+            messageDisplay.innerHTML = ''; 
             frog.style.display = 'none';
             scoreDisplay.style.display = 'none';
             heartsContainer.style.display = 'none';
             touchControls.style.display = 'none';
             gameTimerDisplay.style.display = 'none';
             
-            // 3. Clear all created elements
             document.querySelectorAll('.platform, .coin, .heart-collectible, .potion, .wings, .candy, .question-mark, .bullet-collectible, .wrath-collectible, .fireball, .fireball-warning, .frog-clone, .cloud, .ember').forEach(el => el.remove());
 
-            // 4. Reset game state variables
             isGameOver = false;
             frogBottom = 0;
             frogVelocity = 0;
@@ -1746,7 +2035,6 @@
             isMovingDown = false;
             lastPlatformElement = null;
             isGeneratingPlatform = false;
-            selectedFrogImage = '';
             gameMode = 'classic';
             hellModeTimeRemaining = 120;
             lastTime = 0;
@@ -1755,28 +2043,25 @@
             frogWings.style.opacity = 0.8;
             frogRocket.style.opacity = 1;
 
-            // 5. Show Mode Select Screen
-            modeSelectScreen.style.display = 'flex';
+            if (returnToHome === true) {
+                startScreen.style.display = 'flex';
+            } else {
+                modeSelectScreen.style.display = 'flex';
+                classicModeButton.addEventListener('click', selectClassic);
+                chaoticModeButton.addEventListener('click', selectChaotic);
+                hellModeButton.addEventListener('click', selectHellMode);
+            }
             
-            // 6. Add back mode listeners 
-            classicModeButton.addEventListener('click', selectClassic);
-            chaoticModeButton.addEventListener('click', selectChaotic);
-            hellModeButton.addEventListener('click', selectHellMode);
-            
-            // 7. Remove game listeners
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
             
-            // 8. Make sure background is normal
             gameContainer.classList.remove('hell-mode-bg');
             modeSelectScreen.classList.remove('hell-mode-bg');
             charSelectScreen.classList.remove('hell-mode-bg');
+            outfitSelectScreen.classList.remove('hell-mode-bg');
             explanationScreen.classList.remove('hell-mode-bg');
         }
 
-        // ======================================================
-        // FIXED: gameOver (Hides the touch-controls layer!)
-        // ======================================================
         function gameOver() {
             if (isGameOver) return; 
             isGameOver = true;
@@ -1787,7 +2072,11 @@
             deactivateWrath(); 
             document.querySelectorAll('.fireball-warning').forEach(w => w.remove());
             
-            // IMPORTANT: Hide the touch layer so we can click the button!
+            if (score > 0) {
+                totalAccumulatedCoins += score;
+                saveUserData(); // Save earned coins
+            }
+
             touchControls.style.display = 'none';
 
             let gameOverText = 'Game Over!';
@@ -1795,31 +2084,36 @@
                 gameOverText = `Game Over!<br>Final Score: ${score}`;
             }
             
-            // Clear message box and build it
             messageDisplay.innerHTML = ''; 
             messageDisplay.style.display = 'block';
             
             const textDiv = document.createElement('div');
             textDiv.innerHTML = gameOverText;
             messageDisplay.appendChild(textDiv);
-            
-            const br = document.createElement('br');
-            messageDisplay.appendChild(br);
+
+            const btnContainer = document.createElement('div');
+            btnContainer.style.display = 'flex';
+            btnContainer.style.justifyContent = 'center';
+            btnContainer.style.gap = '10px';
+            btnContainer.style.marginTop = '15px';
 
             const restartButton = document.createElement('button');
-            restartButton.innerText = 'Try Again';
-            
-            restartButton.addEventListener('click', resetGame);
-            
-            messageDisplay.appendChild(restartButton);
+            restartButton.innerText = 'Play Again';
+            restartButton.addEventListener('click', (e) => resetGame(e, false));
+            btnContainer.appendChild(restartButton);
+
+            const homeButton = document.createElement('button');
+            homeButton.innerText = 'Main Menu';
+            homeButton.classList.add('secondary');
+            homeButton.addEventListener('click', (e) => resetGame(e, true));
+            btnContainer.appendChild(homeButton);
+
+            messageDisplay.appendChild(btnContainer);
             
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         }
 
-        // ======================================================
-        // FIXED: winGame (Hides the touch-controls layer!)
-        // ======================================================
         function winGame() {
             if (isGameOver) return; 
             isGameOver = true;
@@ -1830,10 +2124,13 @@
             deactivateWrath();
             document.querySelectorAll('.fireball-warning').forEach(w => w.remove());
             
-            // IMPORTANT: Hide the touch layer so we can click the button!
+            if (score > 0) {
+                totalAccumulatedCoins += score;
+                saveUserData(); // Save earned coins
+            }
+
             touchControls.style.display = 'none';
 
-            // Clear message box and build it
             messageDisplay.innerHTML = '';
             messageDisplay.style.display = 'block';
             
@@ -1850,46 +2147,90 @@
             const text = document.createElement('span');
             text.innerText = 'You become a RICH FROG';
             messageDisplay.appendChild(text);
-            
-            messageDisplay.appendChild(document.createElement('br'));
 
+            const btnContainer = document.createElement('div');
+            btnContainer.style.display = 'flex';
+            btnContainer.style.justifyContent = 'center';
+            btnContainer.style.gap = '10px';
+            btnContainer.style.marginTop = '15px';
+            
             const restartButton = document.createElement('button');
             restartButton.innerText = 'Play Again';
-            
-            restartButton.addEventListener('click', resetGame);
-            
-            messageDisplay.appendChild(restartButton);
+            restartButton.addEventListener('click', (e) => resetGame(e, false));
+            btnContainer.appendChild(restartButton);
+
+            const homeButton = document.createElement('button');
+            homeButton.innerText = 'Main Menu';
+            homeButton.classList.add('secondary');
+            homeButton.addEventListener('click', (e) => resetGame(e, true));
+            btnContainer.appendChild(homeButton);
+
+            messageDisplay.appendChild(btnContainer);
             
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         }
 
+        // --- Character & Outfit Selection Flow ---
+
         function selectAgwong() {
-            selectCharacter('agwong-run.PNG');
+            selectCharacter('agwong-run.PNG', 'agwong');
         }
         
         function selectMilMil() {
-            selectCharacter('milmil-run.PNG');
+            selectCharacter('milmil-run.PNG', 'milmil');
         }
 
-        function selectCharacter(imageSrc) {
-            selectedFrogImage = imageSrc;
+        function selectCharacter(imageSrc, charId) {
+            baseFrogImage = imageSrc;
             
             agwongChar.removeEventListener('click', selectAgwong);
             milmilChar.removeEventListener('click', selectMilMil);
             
             charSelectScreen.style.display = 'none';
-            explanationScreen.style.display = 'flex';
             
+            if (charId === 'agwong') {
+                populateOutfitScreen();
+                outfitSelectScreen.style.display = 'flex';
+            } else {
+                // Skip outfit screen for MilMil
+                selectedFrogImage = baseFrogImage;
+                explanationScreen.style.display = 'flex';
+                nextButton.addEventListener('click', initGame);
+            }
+        }
+
+        function populateOutfitScreen() {
+            outfitGrid.innerHTML = '';
+            
+            // Add Base Default Option
+            const defaultCard = document.createElement('div');
+            defaultCard.className = 'char-card';
+            defaultCard.innerHTML = `<img src="${baseFrogImage}" alt="Default Skin"><p>Default</p>`;
+            defaultCard.onclick = () => finishOutfitSelect(baseFrogImage);
+            outfitGrid.appendChild(defaultCard);
+
+            // Add Unlocked Outfits
+            unlockedOutfits.forEach(outfit => {
+                const card = document.createElement('div');
+                card.className = 'char-card';
+                card.innerHTML = `<img src="${outfit.src}" alt="${outfit.name}"><p>${outfit.name}</p>`;
+                card.onclick = () => finishOutfitSelect(outfit.src);
+                outfitGrid.appendChild(card);
+            });
+        }
+
+        function finishOutfitSelect(finalSkinSrc) {
+            selectedFrogImage = finalSkinSrc;
+            outfitSelectScreen.style.display = 'none';
+            explanationScreen.style.display = 'flex';
             nextButton.addEventListener('click', initGame);
         }
 
         function initGame() {
             nextButton.removeEventListener('click', initGame);
-            
             explanationScreen.style.display = 'none';
             
-            // 1. Show all game elements
             frog.style.display = 'block';
             scoreDisplay.style.display = 'block';
             heartsContainer.style.display = 'block';
@@ -1904,29 +2245,21 @@
             }
             
             if (gameMode === 'hell') {
-                document.querySelectorAll('.ember').forEach(ember => {
-                    ember.style.display = 'block';
-                });
+                document.querySelectorAll('.ember').forEach(ember => ember.style.display = 'block');
                 gameTimerDisplay.style.display = 'block'; 
                 hellModeTimeRemaining = 120; 
             } else {
-                document.querySelectorAll('.cloud').forEach(cloud => {
-                    cloud.style.display = 'block';
-                });
-                gameTimerDisplay.style.display = 'none'; // Hide timer
+                document.querySelectorAll('.cloud').forEach(cloud => cloud.style.display = 'block');
+                gameTimerDisplay.style.display = 'none'; 
             }
             
-            // 2. Add keyboard listeners
             document.addEventListener('keydown', handleKeyDown); 
             document.addEventListener('keyup', handleKeyUp); 
             
             updateHearts(); 
             createStarterPlatform(); 
-            
-            // 3. Scale the game AND calculate joystick center
             scaleGame(); 
             
-            // 4. Start the loops
             lastTime = performance.now(); 
             gameLoopId = requestAnimationFrame(gameLoop); 
             generationLoopTimer = setInterval(generationLoop, 100); 
@@ -1935,7 +2268,6 @@
         function selectMode(mode) {
             gameMode = mode; 
             
-            // Update explanation text
             if (gameMode === 'hell') {
                 coinExplanation.innerText = 'Coin: Coins are for score!';
                 wingsExplanation.style.display = 'none';
@@ -1943,6 +2275,7 @@
                 gameContainer.classList.add('hell-mode-bg');
                 modeSelectScreen.classList.add('hell-mode-bg');
                 charSelectScreen.classList.add('hell-mode-bg');
+                outfitSelectScreen.classList.add('hell-mode-bg');
                 explanationScreen.classList.add('hell-mode-bg');
             } else {
                 coinExplanation.innerText = (gameMode === 'classic') ? 'Coin: Get 100 to win!' : 'Coin: Coins are for score!';
@@ -1951,6 +2284,7 @@
                 gameContainer.classList.remove('hell-mode-bg');
                 modeSelectScreen.classList.remove('hell-mode-bg');
                 charSelectScreen.classList.remove('hell-mode-bg');
+                outfitSelectScreen.classList.remove('hell-mode-bg');
                 explanationScreen.classList.remove('hell-mode-bg');
             }
             
@@ -1965,22 +2299,11 @@
             milmilChar.addEventListener('click', selectMilMil);
         }
         
-        function selectClassic() {
-            selectMode('classic');
-        }
-        
-        function selectChaotic() {
-            selectMode('chaotic');
-        }
-        
-        function selectHellMode() {
-            selectMode('hell');
-        }
+        function selectClassic() { selectMode('classic'); }
+        function selectChaotic() { selectMode('chaotic'); }
+        function selectHellMode() { selectMode('hell'); }
 
         function showModeSelect() {
-            startScreen.removeEventListener('click', showModeSelect);
-            window.removeEventListener('keydown', checkStartGame); 
-
             startScreen.style.display = 'none';
             modeSelectScreen.style.display = 'flex';
             
@@ -1989,13 +2312,6 @@
             hellModeButton.addEventListener('click', selectHellMode);
         }
 
-        function checkStartGame(e) {
-            if (e.key === ' ' || e.key === 'Spacebar') {
-                e.preventDefault(); 
-                showModeSelect();
-            }
-        }
-        
         function scaleGame() {
             const gameWidth = 800;
             const gameHeight = 400;
@@ -2006,15 +2322,11 @@
             const scale = Math.min(scaleX, scaleY);
             
             gameContainer.style.transform = `translate(-50%, -50%) scale(${scale})`;
-            
-            // Recalculate joystick centers
             recalculateJoystickCenter();
         }
 
         function recalculateJoystickCenter() {
-            // Check if joystick is visible before calculating
             if(!joystick.getBoundingClientRect || touchControls.style.display === 'none') return;
-            
             const joyRect = joystick.getBoundingClientRect();
             joystickCenterX = joyRect.left + joyRect.width / 2;
             joystickCenterY = joyRect.top + joyRect.height / 2;
@@ -2035,12 +2347,9 @@
         function handleTouchStart(e) {
             e.preventDefault();
             if (joystickActive) return;
-            
             let touch = e.changedTouches[0];
             joystickTouchId = touch.identifier;
             joystickActive = true;
-            
-            // Recalculate center on first touch
             recalculateJoystickCenter();
         }
 
@@ -2097,16 +2406,31 @@
         }
 
         function startGame() {
-            startScreen.addEventListener('click', showModeSelect);
-            window.addEventListener('keydown', checkStartGame);
-            
+            homePlayButton.addEventListener('click', showModeSelect);
+            homeShopButton.addEventListener('click', showShop);
+            shopBackButton.addEventListener('click', hideShop);
+
+            modeBackButton.addEventListener('click', () => {
+                modeSelectScreen.style.display = 'none';
+                startScreen.style.display = 'flex';
+            });
+            charBackButton.addEventListener('click', () => {
+                charSelectScreen.style.display = 'none';
+                modeSelectScreen.style.display = 'flex';
+            });
+            outfitBackButton.addEventListener('click', () => {
+                outfitSelectScreen.style.display = 'none';
+                charSelectScreen.style.display = 'flex';
+                agwongChar.addEventListener('click', selectAgwong);
+                milmilChar.addEventListener('click', selectMilMil);
+            });
+
             window.addEventListener('resize', scaleGame);
             
             scaleGame(); 
             initTouchControls();
         }
 
-        // Run the setup
         startGame();
     </script>
 </body>
