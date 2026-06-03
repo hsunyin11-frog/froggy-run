@@ -559,6 +559,12 @@
             text-shadow: 0 0 5px white; animation: warning-pulse 0.5s infinite;
         }
         
+        @keyframes warning-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
         #score {
             position: absolute; top: 10px; left: 10px; font-size: 22px;
             color: #333; z-index: 20; background: rgba(255,255,255,0.8);
@@ -892,18 +898,17 @@
             { id: 'milmil', name: 'MilMil', src: 'milmil-run.PNG' }
         ];
 
-        // FIXED FILENAMES HERE (.png instead of .jpg)
+        // FIXED DUCK AND MAFIA FILENAMES
         const allOutfits = [
             { id: 'bee', name: 'Bumblebee Outfit', src: 'agwong-bee.png', charId: 'agwong' },
             { id: 'princess', name: 'Princess Outfit', src: 'agwong-princess.png', charId: 'agwong' },
             { id: 'prada', name: 'Prada Outfit', src: 'agwong-prada.png', charId: 'agwong' },
             { id: 'gucci', name: 'Gucci Outfit', src: 'agwong-gucci.png', charId: 'agwong' },
             { id: 'mafia', name: 'Mafia Outfit', src: 'milmil-mafia.png', charId: 'milmil' },
-            { id: 'duck', name: 'Duck Outfit', src: 'milmil-duck (1).png', charId: 'milmil' }
+            { id: 'duck', name: 'Duck Outfit', src: 'milmil-duck.png', charId: 'milmil' }
         ];
 
         // Mysterious Character Pool for Salvage Recycling Machine
-        // FIXED FILENAMES HERE (.png instead of .jpg)
         const poolCharacters = [
             { id: 'amil', name: 'Amil', src: 'amil.png' },
             { id: 'milgwong', name: 'Milgwong', src: 'milgwong.png' }
@@ -1014,8 +1019,6 @@
         });
 
         // --- GACHA & MYSTERIOUS RECYCLER PROCESSORS ---
-        
-        // NEVER DISABLE GACHA BUTTON
         gachaButton.addEventListener('click', () => {
             if (totalAccumulatedCoins >= gachaCost) {
                 totalAccumulatedCoins -= gachaCost;
